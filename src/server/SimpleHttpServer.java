@@ -33,6 +33,7 @@ public class SimpleHttpServer {
                 "/login",
                 new LoginHandler()
         );
+        server.createContext("/signup", new SignupHandler());
         server.start();
 
         System.out.println(

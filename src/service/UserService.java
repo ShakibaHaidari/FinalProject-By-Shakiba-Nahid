@@ -32,4 +32,57 @@ public class UserService {
     public List<User> getUsers() {
         return users;
     }
+
+    public boolean usernameExists(String username) {
+
+        for (User user : users) {
+
+            if (user.getUsername().equalsIgnoreCase(username)) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    public boolean login(String username,
+                         String password) {
+
+        for (User user : users) {
+
+            if (user.getUsername().equals(username)
+                    &&
+                    user.getPassword().equals(password)) {
+
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    public boolean register(User user) {
+
+        if (usernameExists(user.getUsername())) {
+            return false;
+        }
+
+        users.add(user);
+        return true;
+    }
+
+    public User findByUsername(String username) {
+
+        for (User user : users) {
+
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+
+        }
+
+        return null;
+    }
 }

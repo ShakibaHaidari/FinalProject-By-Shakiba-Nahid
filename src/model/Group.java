@@ -5,22 +5,17 @@ import java.util.List;
 
 public class Group {
 
-    private String id;
+    private final String id;
     private String name;
 
-    private List<model.User> members = new ArrayList<>();
+    private final List<String> memberIds =
+            new ArrayList<>();
 
-    public Group(String id, String name) {
+    public Group(String id,
+                 String name) {
+
         this.id = id;
         this.name = name;
-    }
-
-    public void addMember(model.User user) {
-        members.add(user);
-    }
-
-    public void removeMember(model.User user) {
-        members.remove(user);
     }
 
     public String getId() {
@@ -31,16 +26,42 @@ public class Group {
         return name;
     }
 
-    public List<model.User> getMembers() {
-        return members;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<String> getMemberIds() {
+        return new ArrayList<>(memberIds);
+    }
+
+    public boolean addMember(String userId) {
+
+        if (memberIds.contains(userId)) {
+            return false;
+        }
+
+        memberIds.add(userId);
+
+        return true;
+    }
+
+    public boolean removeMember(String userId) {
+        return memberIds.remove(userId);
+    }
+
+    public int getMemberCount() {
+        return memberIds.size();
     }
 
     @Override
     public String toString() {
-        return "Group{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", members=" + members.size() +
-                '}';
+
+        return "Group{id='"
+                + id
+                + "', name='"
+                + name
+                + "', members="
+                + memberIds.size()
+                + "}";
     }
 }

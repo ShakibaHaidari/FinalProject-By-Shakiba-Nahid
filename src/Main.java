@@ -2,6 +2,7 @@ import cli.AdminCLI;
 import server.SimpleHttpServer;
 import service.GroupService;
 import service.UserService;
+import service.MessageService;
 
 public class Main {
 
@@ -9,15 +10,11 @@ public class Main {
 
         UserService userService = new UserService();
         GroupService groupService = new GroupService();
+        MessageService messageService = new MessageService(groupService);
 
-        SimpleHttpServer server =
-                new SimpleHttpServer(
-                        userService,
-                        groupService
-                );
+        SimpleHttpServer server = new SimpleHttpServer(userService, groupService, messageService);
 
-        AdminCLI adminCLI =
-                new AdminCLI(userService, groupService);
+        AdminCLI adminCLI = new AdminCLI(userService, groupService);
 
         Thread serverThread = new Thread(() -> {
             try {

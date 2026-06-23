@@ -3,6 +3,7 @@ package server;
 import com.sun.net.httpserver.HttpServer;
 import service.GroupService;
 import service.UserService;
+import service.MessageService;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
@@ -13,16 +14,19 @@ public class SimpleHttpServer {
 
     private final UserService userService;
     private final GroupService groupService;
+    private final MessageService messageService;
 
     private HttpServer server;
     private ExecutorService executor;
 
     public SimpleHttpServer(
             UserService userService,
-            GroupService groupService) {
+            GroupService groupService,
+            MessageService messageService) {
 
         this.userService = userService;
         this.groupService = groupService;
+        this.messageService = messageService;
     }
 
     public void start() throws Exception {
@@ -83,6 +87,18 @@ public class SimpleHttpServer {
                 "/api/groups",
                 new GroupsHandler(groupService)
         );
+        server.createContext(
+                "/api/messages",
+                new MessagesHandler(
+                        messageService,
+                        userService
+                )
+        );
+
+        server.createContext(
+                "/api/messages/report",
+                new ReportMessageHandler(messageService)
+        );
 
         server.start();
 
@@ -100,6 +116,13 @@ public class SimpleHttpServer {
 
         System.out.println(
                 "Users API: GET /api/users"
+        );
+        System.out.println(
+                "Messages API: GET/POST /api/messages"
+        );
+
+        System.out.println(
+                "Report API: POST /api/messages/report"
         );
 
         System.out.println(

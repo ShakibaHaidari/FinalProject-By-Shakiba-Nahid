@@ -11,7 +11,10 @@ public class Main {
         GroupService groupService = new GroupService();
 
         SimpleHttpServer server =
-                new SimpleHttpServer(userService);
+                new SimpleHttpServer(
+                        userService,
+                        groupService
+                );
 
         AdminCLI adminCLI =
                 new AdminCLI(userService, groupService);

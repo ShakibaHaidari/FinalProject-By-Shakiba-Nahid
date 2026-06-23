@@ -1,6 +1,7 @@
 package server;
 
 import com.sun.net.httpserver.HttpServer;
+import service.GroupService;
 import service.UserService;
 
 import java.net.InetSocketAddress;
@@ -11,14 +12,17 @@ import java.util.concurrent.Executors;
 public class SimpleHttpServer {
 
     private final UserService userService;
+    private final GroupService groupService;
 
     private HttpServer server;
     private ExecutorService executor;
 
     public SimpleHttpServer(
-            UserService userService) {
+            UserService userService,
+            GroupService groupService) {
 
         this.userService = userService;
+        this.groupService = groupService;
     }
 
     public void start() throws Exception {
@@ -28,8 +32,7 @@ public class SimpleHttpServer {
                 0
         );
 
-        executor =
-                Executors.newFixedThreadPool(10);
+        executor = Executors.newFixedThreadPool(10);
 
         server.setExecutor(executor);
 
@@ -41,13 +44,11 @@ public class SimpleHttpServer {
                 return;
             }
 
-            String response =
-                    "Chat server is running";
+            String response = "Chat server is running";
 
-            byte[] bytes =
-                    response.getBytes(
-                            StandardCharsets.UTF_8
-                    );
+            byte[] bytes = response.getBytes(
+                    StandardCharsets.UTF_8
+            );
 
             exchange.getResponseHeaders().set(
                     "Content-Type",
@@ -60,7 +61,6 @@ public class SimpleHttpServer {
             );
 
             exchange.getResponseBody().write(bytes);
-
             exchange.close();
         });
 
@@ -72,6 +72,16 @@ public class SimpleHttpServer {
         server.createContext(
                 "/api/login",
                 new LoginHandler(userService)
+        );
+
+        server.createContext(
+                "/api/users",
+                new UsersHandler(userService)
+        );
+
+        server.createContext(
+                "/api/groups",
+                new GroupsHandler(groupService)
         );
 
         server.start();
@@ -87,6 +97,14 @@ public class SimpleHttpServer {
         System.out.println(
                 "Login API: POST /api/login"
         );
+
+        System.out.println(
+                "Users API: GET /api/users"
+        );
+
+        System.out.println(
+                "Groups API: GET /api/groups"
+        );
     }
 
     public void stop() {
@@ -99,4 +117,5 @@ public class SimpleHttpServer {
             executor.shutdownNow();
         }
     }
+
 }

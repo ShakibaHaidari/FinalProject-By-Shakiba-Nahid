@@ -15,7 +15,7 @@ public class AdminCLI {
             "admin";
 
     private static final String ADMIN_PASSWORD =
-            "admin123";
+            "Moha@123";
 
     private final Scanner scanner =
             new Scanner(System.in);

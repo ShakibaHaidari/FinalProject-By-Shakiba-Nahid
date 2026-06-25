@@ -1,0 +1,48 @@
+body{
+    margin:0;
+    background-image:url("Background.jpg");
+    background-size:cover;
+    background-position:center;
+    height:100vh;
+}
+.loginBox{
+    width:350px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,0.15);
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+h1{
+    text-align:center;
+    color:#7d4f7d;
+}
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border:1px solid #dfe3e8;
+    border-radius:8px;
+}
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#c8a2c8;
+    color:white;
+}
+button:hover{
+    background:#b48fb4;
+}
+p{
+    text-align:center;
+    margin-top:20px;
+}
+a{
+    text-decoration:none;
+    color:#c8a2c8;
+}

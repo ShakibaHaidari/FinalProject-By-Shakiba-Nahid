@@ -1,0 +1,204 @@
+Chat Web Project – Backend Report
+
+1. Developer Information
+
+* Developer: [Your Name]
+* Role: Backend Developer
+* Project: Chat Web Application – Phase 1
+
+ 2. My Responsibility
+
+My responsibility in this project is the backend development.
+
+I implemented the Java backend, HTTP server, APIs, Admin CLI, user management, group management, messaging system, and reported message feature.
+
+3. Technologies Used
+
+* Java
+* Java HttpServer
+* IntelliJ IDEA
+* Git
+* GitHub
+* PowerShell for API testing
+
+4. Backend Project Structure
+
+src/
+├── cli/
+│   └── AdminCLI.java
+├── model/
+│   ├── User.java
+│   ├── Group.java
+│   └── Message.java
+├── server/
+│   ├── SimpleHttpServer.java
+│   ├── SignupHandler.java
+│   ├── LoginHandler.java
+│   ├── UsersHandler.java
+│   ├── GroupsHandler.java
+│   ├── MessagesHandler.java
+│   └── ReportMessageHandler.java
+├── service/
+│   ├── UserService.java
+│   ├── GroupService.java
+│   └── MessageService.java
+├── util/
+│   └── FormParser.java
+└── Main.java
+
+
+5. Implemented Backend Features
+
+ 5.1 User Registration
+
+Users can register by providing an ID, username, and password.
+
+API:
+
+POST /api/signup
+
+The system checks that the ID and username are unique.
+
+ 5.2 Login System
+
+Users can log in with their username and password.
+
+API:
+
+
+POST /api/login
+
+The system checks whether the username exists and whether the password is correct.
+
+5.3 Password Validation
+
+The password validation system checks that the password includes:
+
+* Uppercase letter
+* Lowercase letter
+* Number
+* Special character
+* At least eight characters
+
+The password must not contain the username.
+
+5.4 Temporary Account Lock
+
+The system temporarily locks a user account after several incorrect login attempts.
+
+5.5 Admin CLI
+
+The Admin CLI was implemented for managing users, groups, and reported messages.
+
+Available options:
+
+```text
+1. Add User
+2. List Users
+3. Remove User
+4. Add Group
+5. List Groups
+6. Remove Group
+7. Add User To Group
+8. Remove User From Group
+9. Show Group Members
+10. Show Reported Messages
+0. Exit
+
+ 5.6 Group Management
+
+The administrator can:
+
+* Create groups
+* Delete groups
+* Add users to groups
+* Remove users from groups
+* View group members
+
+5.7 Messaging System
+
+Users can send messages to a group chat.
+
+API:
+
+POST /api/messages
+
+Messages can be retrieved by using a chat ID.
+
+GET /api/messages?chatId=g1
+
+
+5.8 Reported Messages
+
+A message can be reported through the API.
+
+
+POST /api/messages/report
+
+Reported messages can be viewed through option `10` in the Admin CLI.
+
+6. API Endpoints
+
+ Feature         Method  Endpoint
+
+ Signup          POST    `/api/signup`
+ Login           POST    `/api/login`
+ Get Users       GET     `/api/users`
+ Get Groups      GET     `/api/groups`
+ Get Messages    GET     `/api/messages?chatId=g1`
+ Send Message    POST    `/api/messages`
+ Report Message  POST    `/api/messages/report`
+
+7. Backend Testing
+
+The backend was tested using the following steps:
+
+1. Run `Main.java`.
+2. Start the Java HTTP server.
+3. Log in to Admin CLI.
+4. Create two users: `m1` and `m2`.
+5. Create a group with ID `g1`.
+6. Add both users to the group.
+7. Test the users API.
+8. Test the groups API.
+9. Send messages from both users.
+10. Retrieve messages from the group.
+11. Report one message.
+12. Check reported messages using option `10` in Admin CLI.
+
+Example command for sending a message:
+
+```powershell
+curl.exe -X POST "http://localhost:8080/api/messages" -H "Content-Type: application/x-www-form-urlencoded" -d "chatId=g1&senderId=m1&content=Hello%20from%20m1"
+```
+
+Example command for reporting a message:
+
+```powershell
+curl.exe -X POST "http://localhost:8080/api/messages/report" -H "Content-Type: application/x-www-form-urlencoded" -d "messageId=MESSAGE_ID"
+```
+
+8. Backend Screenshots
+
+![Users API](screenshots/api-users.png)
+![Create User Account](screenshots/create-account.png)
+![Create Group](screenshots/create-group.png)
+![Add User to Group](screenshots/add-member-group.png)
+![Groups API](screenshots/api-group.png)
+![Push Project to GitHub](screenshots/push-repo.png)
+![GitHub Repository Creation](screenshots/create-repo.png)
+![GitHub Repository Creation](screenshots/create-repo1.png)
+![GitHub Repository Creation](screenshots/create-repo2.png)
+![GitHub Repository Creation](screenshots/create-repo3.png)
+![Reported Messages](screenshots/reported.png)
+![Send Message to Group g1](screenshots/message-id-g1.png)
+![Server Running](screenshots/localhost.png)
+![Group Members](screenshots/show-member-in-group.png)
+
+
+9. Current Limitation
+
+In this phase, users, groups, and messages are stored in memory.
+
+Therefore, all data is removed when the application is stopped and started again.
+

@@ -1,46 +1,53 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat Web Home</title>
-
-  <link rel="stylesheet" href="css/home.css">
-
+  <link rel="stylesheet" href="Home.css">
 </head>
+
 <body>
+
 <div class="header">
   <h2>Chat Web</h2>
-  <a href="settings.html">
-    ⚙
-  </a>
+  <a href="#" id="settingsBtn">⚙</a>
 </div>
+
 <div class="search">
-  <input placeholder="Search chats">
+  <input type="text" placeholder="Search chats">
 </div>
+
 <div class="chat-list">
-  <div class="chat">
-    <div class="profile">
-    </div>
+
+  <!-- Ali Chat -->
+  <div class="chat" onclick="window.location.href='Chat.html'">
+    <div class="profile"></div>
+
     <div>
       <h3>Ali</h3>
       <p>Hello...</p>
     </div>
-    <script src="Home.js"></script>
   </div>
-  <div class="chat">
-    <div class="profile">
-    </div>
+
+  <!-- Group Chat -->
+  <div class="chat" onclick="window.location.href='Chat.html'">
+    <div class="profile"></div>
+
     <div>
       <h3>Group Chat</h3>
       <p>Last message</p>
     </div>
   </div>
+
 </div>
-<a class="new-chat" href="newchat.html">
+
+<a href="#" class="new-chat" id="newChatBtn">
   + New Chat
 </a>
+
 <script src="Home.js"></script>
+
 </body>
 </html>

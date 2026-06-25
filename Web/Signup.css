@@ -22,6 +22,7 @@ top:50%;
 left:50%;
 transform:translate(-50%,-50%);
 }
+
 h1{
 text-align:center;
 color:#c8a2c8;
@@ -47,6 +48,7 @@ background:#c8a2c8;
 color:white;
 border:none;
 border-radius:8px;
+cursor:pointer;
 }
 
 button:hover{

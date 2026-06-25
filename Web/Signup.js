@@ -1,28 +1,22 @@
-function createAccount(){
+document.getElementById("createAccountBtn").addEventListener("click", function () {
 
-let username =
-document.getElementById("username").value;
+    let username = document.getElementById("username").value;
+    let userId = document.getElementById("userId").value;
+    let password = document.getElementById("password").value;
+    let repeatPassword = document.getElementById("repeatPassword").value;
 
-let id =
-document.getElementById("userId").value;
+    if (username === "" || userId === "" || password === "" || repeatPassword === "") {
+        alert("Please fill in all fields.");
+        return;
+    }
 
-let password =
-document.getElementById("password").value;
+    if (password !== repeatPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
 
-let repeat =
-document.getElementById("repeatPassword").value;
+    alert("Account created successfully!");
 
-if(username==="" || id==="" || password==="" || repeat===""){
+    window.location.href = "Login.html";
 
-alert("Please fill all fields");
-}
-else if(password !== repeat){
-alert("Passwords are not same");
-}
-else{
-
-alert("Account created");
-
-window.location.href="index.html";
-}
-}
+});

@@ -1,39 +1,26 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <title>Chat Web - Chat</title>
-
-    <link rel="stylesheet" href="css/chat.css">
-
+    <link rel="stylesheet" href="chat.css">
+    <script src="Chat.js" defer></script>
 </head>
 <body>
 <div class="chat-header">
     <a href="home.html">←</a>
+
     <div>
-        <h3>Ali</h3>
-        <p>Online</p>
+        <h3>Group Chat</h3>
+        <p id="chatStatus">Loading...</p>
     </div>
 </div>
-<div class="messages" id="messages">
-    <div class="message">
-        Hello
-    </div>
-    <div class="message my-message">
-        Hi, how are you?
-    </div>
-    <div class="message">
-        I am good
-    </div>
-</div>
+
+<div class="messages" id="messages"></div>
 <div class="send-box">
     <input id="message" type="text" placeholder="Write a message">
-    <button onclick="sendMessage">Send</button>
+    <button id="sendButton" type="button">Send</button>
 </div>
-<script src="Chat.js"></script>
+<p id="messageStatus"></p>
 </body>
 </html>

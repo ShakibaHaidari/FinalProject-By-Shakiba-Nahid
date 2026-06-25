@@ -1,6 +1,8 @@
-function openSettings(){
-window.location.href="settings.html";
-}
-function newChat(){
-window.location.href="newchat.html";
-}
+document.getElementById("settingsBtn").addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.href = "Setting.html";
+});
+document.getElementById("newChatBtn").addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.href = "NewChat.html";
+});

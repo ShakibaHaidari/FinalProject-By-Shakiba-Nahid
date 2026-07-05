@@ -1,10 +1,9 @@
 Chat Web Project – Backend Report
+ Developer Information
 
-1. Developer Information
-
-* Developer: Shakiba Haidari
-* Role: Backend Developer
-* Project: Chat Web Application – Phase 1
+ Developer: Shakiba Haidari
+ Role: Backend Developer
+ Project: Chat Web Application – Phase 1
 
  2. My Responsibility
 
@@ -14,12 +13,12 @@ I implemented the Java backend, HTTP server, APIs, Admin CLI, user management, g
 
 3. Technologies Used
 
-* Java
-* Java HttpServer
-* IntelliJ IDEA
-* Git
-* GitHub
-* PowerShell for API testing
+ Java
+ Java HttpServer
+ IntelliJ IDEA
+ Git
+ GitHub
+ PowerShell for API testing
 
 4. Backend Project Structure
 
@@ -74,11 +73,11 @@ The system checks whether the username exists and whether the password is correc
 
 The password validation system checks that the password includes:
 
-* Uppercase letter
-* Lowercase letter
-* Number
-* Special character
-* At least eight characters
+ Uppercase letter
+ Lowercase letter
+ Number
+ Special character
+ At least eight characters
 
 The password must not contain the username.
 
@@ -91,8 +90,7 @@ The system temporarily locks a user account after several incorrect login attemp
 The Admin CLI was implemented for managing users, groups, and reported messages.
 
 Available options:
-
-```text
+text
 1. Add User
 2. List Users
 3. Remove User
@@ -109,11 +107,11 @@ Available options:
 
 The administrator can:
 
-* Create groups
-* Delete groups
-* Add users to groups
-* Remove users from groups
-* View group members
+Create groups
+ Delete groups
+ Add users to groups
+ Remove users from groups
+ View group members
 
 5.7 Messaging System
 
@@ -141,13 +139,13 @@ Reported messages can be viewed through option `10` in the Admin CLI.
 
  Feature         Method  Endpoint
 
- Signup          POST    `/api/signup`
- Login           POST    `/api/login`
- Get Users       GET     `/api/users`
- Get Groups      GET     `/api/groups`
- Get Messages    GET     `/api/messages?chatId=g1`
- Send Message    POST    `/api/messages`
- Report Message  POST    `/api/messages/report`
+ Signup          POST    /api/signup
+ Login           POST    /api/login
+ Get Users       GET     /api/users
+ Get Groups      GET     /api/groups
+ Get Messages    GET     /api/messages?chatId=g1
+ Send Message    POST    /api/messages
+ Report Message  POST    /api/messages/report
 
 7. Backend Testing
 
@@ -168,15 +166,14 @@ The backend was tested using the following steps:
 
 Example command for sending a message:
 
-```powershell
+powershell
 curl.exe -X POST "http://localhost:8080/api/messages" -H "Content-Type: application/x-www-form-urlencoded" -d "chatId=g1&senderId=m1&content=Hello%20from%20m1"
-```
 
 Example command for reporting a message:
 
-```powershell
+powershell
 curl.exe -X POST "http://localhost:8080/api/messages/report" -H "Content-Type: application/x-www-form-urlencoded" -d "messageId=MESSAGE_ID"
-```
+
 
 8. Backend Screenshots
 
@@ -195,6 +192,15 @@ curl.exe -X POST "http://localhost:8080/api/messages/report" -H "Content-Type: a
 ![Server Running](screenshots/localhost.png)
 ![Group Members](screenshots/show-member-in-group.png)
 
+
+Bonus Features – Phase 1
+ Edit User and Group from Admin CLI
+As a bonus feature, the Admin CLI supports editing user and group information.
+
+The administrator can:
+ Change a user's username
+ Change a user's password
+ Change a group's name
 
 9. Current Limitation
 

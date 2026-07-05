@@ -135,4 +135,29 @@ public class GroupService {
 
         return new ArrayList<>(reportedMessages);
     }
+
+    public enum UpdateGroupResult {
+        SUCCESS,
+        GROUP_NOT_FOUND,
+        INVALID_GROUP_NAME
+    }
+
+    public synchronized UpdateGroupResult updateGroupName(
+            String groupId,
+            String newName) {
+
+        if (newName == null || newName.trim().isEmpty()) {
+            return UpdateGroupResult.INVALID_GROUP_NAME;
+        }
+
+        Group group = getGroupById(groupId);
+
+        if (group == null) {
+            return UpdateGroupResult.GROUP_NOT_FOUND;
+        }
+
+        group.setName(newName.trim());
+
+        return UpdateGroupResult.SUCCESS;
+    }
 }

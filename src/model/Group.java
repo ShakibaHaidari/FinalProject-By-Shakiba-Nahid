@@ -25,6 +25,7 @@ public class Group {
     public String getName() {
         return name;
     }
+//    emtiazi faz 1
 
     public void setName(String name) {
         this.name = name;

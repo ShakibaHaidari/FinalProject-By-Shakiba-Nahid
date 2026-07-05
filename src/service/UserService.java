@@ -177,4 +177,54 @@ public class UserService {
     private boolean isBlank(String value) {
         return value == null || value.isBlank();
     }
+
+
+    public enum UpdateUsernameResult {
+        SUCCESS,
+        USER_NOT_FOUND,
+        USERNAME_EXISTS,
+        INVALID_USERNAME
+    }
+
+    public enum ChangePasswordResult {
+        SUCCESS,
+        USER_NOT_FOUND,
+        INVALID_PASSWORD
+    }
+
+    public synchronized UpdateUsernameResult updateUsername(String userId, String newUsername) {
+        if (newUsername == null || newUsername.trim().isEmpty()) {
+            return UpdateUsernameResult.INVALID_USERNAME;
+        }
+        User user = getUserById(userId);
+        if (user == null) {
+            return UpdateUsernameResult.USER_NOT_FOUND;
+        }
+
+        String cleanUsername = newUsername.trim();
+
+        for (User existingUser : users) {
+            boolean isAnotherUser = !existingUser.getId().equals(userId);
+
+            if (isAnotherUser && existingUser.getUsername().equalsIgnoreCase(cleanUsername)) {
+                return UpdateUsernameResult.USERNAME_EXISTS;
+            }
+        }
+        user.setUsername(cleanUsername);
+        return UpdateUsernameResult.SUCCESS;
+    }
+    public synchronized ChangePasswordResult changePassword(String userId, String newPassword) {
+        User user = getUserById(userId);
+
+        if (user == null) {
+            return ChangePasswordResult.USER_NOT_FOUND;
+        }
+        if (!isValidPassword(user.getUsername(), newPassword)) {
+            return ChangePasswordResult.INVALID_PASSWORD;
+        }
+        user.setPassword(newPassword);
+        return ChangePasswordResult.SUCCESS;
+    }
+
+
 }

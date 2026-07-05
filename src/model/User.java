@@ -21,6 +21,15 @@ public class User {
         this.lockedUntilMillis = 0;
     }
 
+//    امتیازی بحش اول
+public void setUsernames(String username) {
+    this.username = username;
+}
+
+    public void setPasswords(String password) {
+        this.password = password;
+    }
+
     public String getId() {
         return id;
     }

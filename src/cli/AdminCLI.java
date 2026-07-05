@@ -71,6 +71,10 @@ public class AdminCLI {
 
                 case 10 -> showReportedMessages();
 
+                case 11 -> editUserUsername();
+                case 12 -> changeUserPassword();
+                case 13 -> editGroupName();
+
                 case 0 -> {
 
                     running = false;
@@ -134,6 +138,9 @@ public class AdminCLI {
                 8. Remove User From Group
                 9. Show Group Members
                 10. Show Reported Messages
+                11. Edit User Username
+                12. Change User Password
+                13. Edit Group Name
                 0. Exit
                 """);
     }
@@ -464,6 +471,100 @@ public class AdminCLI {
 
             System.out.println(
                     "-------------------------"
+            );
+        }
+    }
+
+    private void editUserUsername() {
+
+        String userId =
+                readNonBlank("Enter User ID: ");
+
+        String newUsername =
+                readNonBlank("Enter New Username: ");
+
+        UserService.UpdateUsernameResult result =
+                userService.updateUsername(
+                        userId,
+                        newUsername
+                );
+
+        switch (result) {
+
+            case SUCCESS -> System.out.println(
+                    "Username updated successfully."
+            );
+
+            case USER_NOT_FOUND -> System.out.println(
+                    "User not found."
+            );
+
+            case USERNAME_EXISTS -> System.out.println(
+                    "This username already exists."
+            );
+
+            case INVALID_USERNAME -> System.out.println(
+                    "Username cannot be empty."
+            );
+        }
+    }
+
+    private void changeUserPassword() {
+
+        String userId =
+                readNonBlank("Enter User ID: ");
+
+        String newPassword =
+                readNonBlank("Enter New Password: ");
+
+        UserService.ChangePasswordResult result =
+                userService.changePassword(
+                        userId,
+                        newPassword
+                );
+
+        switch (result) {
+
+            case SUCCESS -> System.out.println(
+                    "Password changed successfully."
+            );
+
+            case USER_NOT_FOUND -> System.out.println(
+                    "User not found."
+            );
+
+            case INVALID_PASSWORD -> System.out.println(
+                    "Invalid password. Use 8+ characters with uppercase, lowercase, number and !@%$#^&*."
+            );
+        }
+    }
+
+    private void editGroupName() {
+
+        String groupId =
+                readNonBlank("Enter Group ID: ");
+
+        String newGroupName =
+                readNonBlank("Enter New Group Name: ");
+
+        GroupService.UpdateGroupResult result =
+                groupService.updateGroupName(
+                        groupId,
+                        newGroupName
+                );
+
+        switch (result) {
+
+            case SUCCESS -> System.out.println(
+                    "Group name updated successfully."
+            );
+
+            case GROUP_NOT_FOUND -> System.out.println(
+                    "Group not found."
+            );
+
+            case INVALID_GROUP_NAME -> System.out.println(
+                    "Group name cannot be empty."
             );
         }
     }

@@ -5,6 +5,7 @@ import model.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.security.SecureRandom;
 
 public class UserService {
 
@@ -226,5 +227,162 @@ public class UserService {
         return ChangePasswordResult.SUCCESS;
     }
 
+    private static final SecureRandom RANDOM =
+            new SecureRandom();
 
+    private static final String UPPERCASE =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    private static final String LOWERCASE =
+            "abcdefghijklmnopqrstuvwxyz";
+
+    private static final String DIGITS =
+            "0123456789";
+
+    private static final String SPECIAL =
+            "!@%$#^&*";
+
+    private static final String ALL_PASSWORD_CHARACTERS =
+            UPPERCASE
+                    + LOWERCASE
+                    + DIGITS
+                    + SPECIAL;
+
+    public enum ResetPasswordResult {
+        SUCCESS,
+        USER_NOT_FOUND
+    }
+
+    public static class PasswordResetData {
+
+        private final ResetPasswordResult result;
+        private final String temporaryPassword;
+
+        public PasswordResetData(
+                ResetPasswordResult result,
+                String temporaryPassword) {
+
+            this.result = result;
+            this.temporaryPassword = temporaryPassword;
+        }
+
+        public ResetPasswordResult getResult() {
+            return result;
+        }
+
+        public String getTemporaryPassword() {
+            return temporaryPassword;
+        }
+    }
+
+    public synchronized PasswordResetData resetPassword(
+            String username) {
+
+        User user = getUserByUsername(username);
+
+        if (user == null) {
+            return new PasswordResetData(
+                    ResetPasswordResult.USER_NOT_FOUND,
+                    null
+            );
+        }
+
+        String temporaryPassword =
+                generateTemporaryPassword(
+                        user.getUsername()
+                );
+
+        user.setPassword(temporaryPassword);
+
+        user.resetFailedLoginAttempts();
+
+        return new PasswordResetData(
+                ResetPasswordResult.SUCCESS,
+                temporaryPassword
+        );
+    }
+
+    private String generateTemporaryPassword(
+            String username) {
+
+        String temporaryPassword;
+
+        do {
+            StringBuilder password =
+                    new StringBuilder();
+
+            password.append(
+                    getRandomCharacter(UPPERCASE)
+            );
+
+            password.append(
+                    getRandomCharacter(LOWERCASE)
+            );
+
+            password.append(
+                    getRandomCharacter(DIGITS)
+            );
+
+            password.append(
+                    getRandomCharacter(SPECIAL)
+            );
+
+            for (int index = 0; index < 8; index++) {
+                password.append(
+                        getRandomCharacter(
+                                ALL_PASSWORD_CHARACTERS
+                        )
+                );
+            }
+
+            temporaryPassword =
+                    shufflePassword(
+                            password.toString()
+                    );
+
+        } while (!isValidPassword(
+                username,
+                temporaryPassword
+        ));
+
+        return temporaryPassword;
+    }
+
+    private char getRandomCharacter(
+            String characters) {
+
+        int randomIndex =
+                RANDOM.nextInt(
+                        characters.length()
+                );
+
+        return characters.charAt(randomIndex);
+    }
+
+    private String shufflePassword(
+            String password) {
+
+        char[] characters =
+                password.toCharArray();
+
+        for (int index =
+             characters.length - 1;
+             index > 0;
+             index--) {
+
+            int randomIndex =
+                    RANDOM.nextInt(index + 1);
+
+            char temporary =
+                    characters[index];
+
+            characters[index] =
+                    characters[randomIndex];
+
+            characters[randomIndex] =
+                    temporary;
+        }
+
+        return new String(characters);
+    }
 }

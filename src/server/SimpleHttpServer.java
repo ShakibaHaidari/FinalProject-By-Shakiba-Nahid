@@ -77,7 +77,10 @@ public class SimpleHttpServer {
                 "/api/login",
                 new LoginHandler(userService)
         );
-
+        server.createContext(
+                "/api/forgot-password",
+                new ForgotPasswordHandler(userService)
+        );
         server.createContext(
                 "/api/users",
                 new UsersHandler(userService)
@@ -113,7 +116,9 @@ public class SimpleHttpServer {
         System.out.println(
                 "Login API: POST /api/login"
         );
-
+        System.out.println(
+                "Forgot Password API: POST /api/forgot-password"
+        );
         System.out.println(
                 "Users API: GET /api/users"
         );

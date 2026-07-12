@@ -1,11 +1,11 @@
 package service;
 
 import model.User;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.security.SecureRandom;
+import repository.UserRepository;
 
 public class UserService {
 
@@ -17,8 +17,8 @@ public class UserService {
                     "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@%$#^&*])[A-Za-z\\d!@%$#^&*]{8,}$"
             );
 
-    private final List<User> users =
-            new ArrayList<>();
+    private final List<User> users;
+    private final UserRepository userRepository;
 
     public enum RegistrationResult {
         SUCCESS,
@@ -34,22 +34,31 @@ public class UserService {
         WRONG_PASSWORD,
         ACCOUNT_LOCKED
     }
+    public UserService() {
 
-    public synchronized RegistrationResult register(
-            User user) {
+        this.userRepository =
+                new UserRepository();
 
-        if (user == null
-                || isBlank(user.getId())
-                || isBlank(user.getUsername())
-                || isBlank(user.getPassword())) {
+        this.users =
+                new ArrayList<>(
+                        userRepository.loadAll()
+                );
+
+        System.out.println(
+                "Loaded "
+                        + users.size()
+                        + " user(s) from users.txt."
+        );
+    }
+    public synchronized RegistrationResult register(User user) {
+
+        if (user == null || isBlank(user.getId()) || isBlank(user.getUsername()) || isBlank(user.getPassword())) {
 
             return RegistrationResult.INVALID_INPUT;
         }
-
         if (getUserById(user.getId()) != null) {
             return RegistrationResult.ID_EXISTS;
         }
-
         if (getUserByUsername(
                 user.getUsername()) != null) {
 
@@ -64,7 +73,7 @@ public class UserService {
         }
 
         users.add(user);
-
+        persistUsers();
         return RegistrationResult.SUCCESS;
     }
 
@@ -84,10 +93,8 @@ public class UserService {
 
         if (!user.getPassword().equals(password)) {
 
-            user.registerFailedLogin(
-                    LOCK_DURATION_MILLIS
-            );
-
+            user.registerFailedLogin(LOCK_DURATION_MILLIS);
+            persistUsers();
             if (user.isLocked()) {
                 return LoginResult.ACCOUNT_LOCKED;
             }
@@ -96,7 +103,7 @@ public class UserService {
         }
 
         user.resetFailedLoginAttempts();
-
+        persistUsers();
         return LoginResult.SUCCESS;
     }
 
@@ -110,7 +117,7 @@ public class UserService {
         }
 
         users.remove(user);
-
+        persistUsers();
         return true;
     }
 
@@ -212,6 +219,7 @@ public class UserService {
             }
         }
         user.setUsername(cleanUsername);
+        persistUsers();
         return UpdateUsernameResult.SUCCESS;
     }
     public synchronized ChangePasswordResult changePassword(String userId, String newPassword) {
@@ -224,6 +232,7 @@ public class UserService {
             return ChangePasswordResult.INVALID_PASSWORD;
         }
         user.setPassword(newPassword);
+        persistUsers();
         return ChangePasswordResult.SUCCESS;
     }
 
@@ -295,11 +304,10 @@ public class UserService {
         user.setPassword(temporaryPassword);
 
         user.resetFailedLoginAttempts();
+        persistUsers();
 
         return new PasswordResetData(
-                ResetPasswordResult.SUCCESS,
-                temporaryPassword
-        );
+                ResetPasswordResult.SUCCESS, temporaryPassword);
     }
 
     private String generateTemporaryPassword(
@@ -384,5 +392,9 @@ public class UserService {
         }
 
         return new String(characters);
+    }
+
+    private void persistUsers() {
+        userRepository.saveAll(users);
     }
 }

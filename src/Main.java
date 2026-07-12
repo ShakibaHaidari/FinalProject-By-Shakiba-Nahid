@@ -3,11 +3,12 @@ import server.SimpleHttpServer;
 import service.GroupService;
 import service.UserService;
 import service.MessageService;
+import storage.DataPaths;
 
 public class Main {
 
     public static void main(String[] args) {
-
+        DataPaths.initialize();
         UserService userService = new UserService();
         GroupService groupService = new GroupService();
         MessageService messageService = new MessageService(groupService);
@@ -26,11 +27,8 @@ public class Main {
                 );
             }
         });
-
         serverThread.start();
-
         adminCLI.start();
-
         server.stop();
     }
 }

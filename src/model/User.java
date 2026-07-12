@@ -5,22 +5,25 @@ public class User {
     private final String id;
     private String username;
     private String password;
-
     private int failedLoginAttempts;
     private long lockedUntilMillis;
 
-    public User(String id,
-                String username,
-                String password) {
-
+    public User(String id,String username,String password) {
         this.id = id;
         this.username = username;
         this.password = password;
-
         this.failedLoginAttempts = 0;
         this.lockedUntilMillis = 0;
     }
 
+    public User(String id, String username, String password, int failedLoginAttempts, long lockedUntilMillis){
+        this.id = id;
+        this. username = username;
+        this.password = password;
+        this.failedLoginAttempts = failedLoginAttempts;
+        this.lockedUntilMillis= lockedUntilMillis;
+
+    }
 //    امتیازی بحش اول
 public void setUsernames(String username) {
     this.username = username;
@@ -45,7 +48,9 @@ public void setUsernames(String username) {
     public int getFailedLoginAttempts() {
         return failedLoginAttempts;
     }
-
+    public long getLockedUntilMillis(){
+        return lockedUntilMillis;
+    }
     public void setUsername(String username) {
         this.username = username;
     }

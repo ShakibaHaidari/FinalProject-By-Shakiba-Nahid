@@ -11,13 +11,9 @@ import java.util.List;
 
 public class UserRepository {
     public synchronized List<User> loadAll() {
-
         List<User> users = new ArrayList<>();
         try {
-            List<String> lines = Files.readAllLines(
-                    DataPaths.USERS_FILE,
-                    StandardCharsets.UTF_8
-            );
+            List<String> lines = Files.readAllLines(DataPaths.USERS_FILE, StandardCharsets.UTF_8);
             for (String line : lines) {
                 if (line == null || line.isBlank()) {
                     continue;
@@ -36,9 +32,7 @@ public class UserRepository {
         }
     }
     public synchronized void saveAll(List<User> users) {
-
         List<String> lines = new ArrayList<>();
-
         for (User user : users) {
             lines.add(userLine(user));
         }

@@ -14,12 +14,22 @@ public class MessageService {
     private final GroupService groupService;
     private final MessageRepository messageRepository;
     private final ReportRepository reportRepository;
+
+    private static final int maxSpamM = 5;
+    private static final long timeSpamM = 1000;
+
+    private final List<String> senderID;
+    private final List<Long> recentTimeM;
+
     public MessageService(GroupService groupService) {
         this.groupService = groupService;
         this.messageRepository = new MessageRepository();
         this.reportRepository = new ReportRepository();
 
         this.messages = new ArrayList<>(messageRepository.loadAll());
+
+        this.senderID = new ArrayList<>();
+        this.recentTimeM = new ArrayList<>();
         List<String> reportedMessageIds = reportRepository.loadAllMessageIds();
         loadReportedMessages(reportedMessageIds);
         System.out.println("load" + messages.size() + "messages from messages.txt.");
@@ -33,9 +43,12 @@ public class MessageService {
         if (content.length() > haveMessagesMax){
             return null;
         }
+        if (isSpam(senderId)) {
+            return null;
+        }
         Message message = new Message(UUID.randomUUID().toString(), chatId, senderId, content.trim());
         messages.add(message);
-
+        addRecentMessage(senderId);
         persistMessages();
         return message;
     }
@@ -122,7 +135,33 @@ public class MessageService {
     private void persistReports(){
         reportRepository.saveAll(getReportedMessagesInternal());
     }
-    private boolean isBlank(String value){
+    private boolean isSpam(String senderId) {
+        long now = System.currentTimeMillis();
+        int count = 0;
+        int i = 0;
+
+        while (i < senderID.size()) {
+            long oldTime = recentTimeM.get(i);
+
+            if (now - oldTime > timeSpamM) {
+                senderID.remove(i);
+                recentTimeM.remove(i);
+            } else {
+                if (senderID.get(i).equalsIgnoreCase(senderId)) {
+                    count++;
+                }
+                i++;
+            }
+        }
+        return count >= maxSpamM;
+    }
+    private void addRecentMessage(String senderId) {
+        senderID.add(senderId);
+        recentTimeM.add(System.currentTimeMillis());
+    }
+
+        private boolean isBlank(String value){
         return value == null || value.isBlank();
     }
+
 }

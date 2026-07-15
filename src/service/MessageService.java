@@ -87,6 +87,79 @@ public class MessageService {
 
         return true;
     }
+    public synchronized boolean editMessage(
+            String messageId,
+            String senderId,
+            String newContent
+    ) {
+        Message message = getMessageById(messageId);
+
+        if (message == null) {
+            return false;
+        }
+
+        if (!message.getSenderId().equalsIgnoreCase(senderId)) {
+            return false;
+        }
+
+        if (isBlank(newContent)) {
+            return false;
+        }
+
+        if (newContent.length() > haveMessagesMax) {
+            return false;
+        }
+
+        boolean edited = message.editContent(newContent);
+
+        if (edited) {
+            persistMessages();
+            persistReports();
+        }
+
+        return edited;
+    }
+
+    public synchronized boolean deleteMessage(
+            String messageId,
+            String senderId
+    ) {
+        Message message = getMessageById(messageId);
+
+        if (message == null) {
+            return false;
+        }
+
+        if (!message.getSenderId().equalsIgnoreCase(senderId)) {
+            return false;
+        }
+
+        boolean deleted = message.deleteMessage();
+
+        if (deleted) {
+            persistMessages();
+            persistReports();
+        }
+
+        return deleted;
+    }
+//    حدف پیام
+public synchronized List<Message> getMessageHistory(
+        String chatId
+) {
+    List<Message> result = new ArrayList<>();
+
+    for (Message message : messages) {
+
+        if (message.getChatId().equalsIgnoreCase(chatId)
+                && (message.isEdited() || message.isDeleted())) {
+
+            result.add(message);
+        }
+    }
+
+    return result;
+}
     // faz 2 changes
     private void loadReportedMessages(List<String> reportedMessageIds) {
         boolean changed = false;

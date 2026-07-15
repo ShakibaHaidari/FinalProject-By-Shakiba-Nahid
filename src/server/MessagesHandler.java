@@ -111,7 +111,7 @@ public class MessagesHandler implements HttpHandler {
                     .append("\",");
 
             json.append("\"content\":\"")
-                    .append(escapeJson(message.getContent()))
+                    .append(escapeJson(message.getVisibleContent()))
                     .append("\",");
 
             json.append("\"createdAt\":\"")
@@ -119,6 +119,13 @@ public class MessagesHandler implements HttpHandler {
                             message.getCreatedAt().toString()
                     ))
                     .append("\"");
+            json.append("\"edited\":")
+                    .append(message.isEdited())
+                    .append(",");
+
+            json.append("\"deleted\":")
+                    .append(message.isDeleted())
+                    .append(",");
 
             json.append("}");
 
@@ -151,10 +158,7 @@ public class MessagesHandler implements HttpHandler {
         String senderId = form.get("senderId");
         String content = form.get("content");
 
-        if (isBlank(chatId)
-                || isBlank(senderId)
-                || isBlank(content)) {
-
+        if (isBlank(chatId) || isBlank(senderId) || isBlank(content)){
             HttpUtils.sendJson(
                     exchange,
                     400,
@@ -168,25 +172,15 @@ public class MessagesHandler implements HttpHandler {
 
             return;
         }
-
         User sender = userService.getUserById(senderId);
-
         if (sender == null) {
-
             HttpUtils.sendJson(
                     exchange,
                     404,
                     """
-                    {
-                      "success": false,
-                      "message": "Sender user was not found"
-                    }
-                    """
-            );
-
+ {"success": false "message": "Sender user was not found" }""");
             return;
         }
-
         Message message = messageService.sendMessage(
                 chatId,
                 senderId,

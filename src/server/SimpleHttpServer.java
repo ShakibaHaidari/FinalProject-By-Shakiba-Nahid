@@ -102,6 +102,20 @@ public class SimpleHttpServer {
                 "/api/messages/report",
                 new ReportMessageHandler(messageService)
         );
+        server.createContext(
+                "/api/messages/edit",
+                new EditMessageHandler(messageService)
+        );
+
+        server.createContext(
+                "/api/messages/delete",
+                new DeleteMessageHandler(messageService)
+        );
+
+        server.createContext(
+                "/api/messages/history",
+                new MessageHistoryHandler(messageService)
+        );
 
         server.start();
 
@@ -133,6 +147,9 @@ public class SimpleHttpServer {
         System.out.println(
                 "Groups API: GET /api/groups"
         );
+        System.out.println("Edit Message API: POST /api/messages/edit");
+        System.out.println("Delete Message API: POST /api/messages/delete");
+        System.out.println("Message History API: GET /api/messages/history");
     }
 
     public void stop() {

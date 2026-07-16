@@ -5,6 +5,8 @@ import service.UserService;
 import service.MessageService;
 import storage.DataPaths;
 import websocket.WebSocketServer;
+import service.SavedMessageService;
+import service.ChatSettingService;
 public class Main {
 
     public static void main(String[] args) {
@@ -12,8 +14,11 @@ public class Main {
         UserService userService = new UserService();
         GroupService groupService = new GroupService();
         MessageService messageService = new MessageService(groupService);
+        SavedMessageService savedMessageService = new SavedMessageService(messageService);
+        ChatSettingService chatSettingService = new ChatSettingService();
 
-        SimpleHttpServer server = new SimpleHttpServer(userService, groupService, messageService);
+        SimpleHttpServer server = new SimpleHttpServer(userService, groupService, messageService , savedMessageService,chatSettingService
+        );
 //        creat websocket
         WebSocketServer webSocketServer =new WebSocketServer(9090,  messageService);
         Thread webSocketThread = new Thread(() -> {

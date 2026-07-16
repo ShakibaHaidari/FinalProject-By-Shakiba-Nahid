@@ -20,7 +20,7 @@ public class MessageRepository {
 
         try {
             List<String> lines = Files.readAllLines(
-                    DataPaths.MESSAGES_FILE,
+                    DataPaths.messagefile,
                     StandardCharsets.UTF_8
             );
 
@@ -62,7 +62,7 @@ public class MessageRepository {
 
         try {
             Files.write(
-                    DataPaths.MESSAGES_FILE,
+                    DataPaths.messagefile,
                     lines,
                     StandardCharsets.UTF_8
             );
@@ -117,17 +117,10 @@ public class MessageRepository {
     }
 
     private Message lineMessage(String line) {
-
         String[] field = line.split("\\|", -1);
-
-        // Old message format from previous phase:
-        // id|chatId|senderId|content|createdAt|reported
         if (field.length == 6) {
             return oldLineMessage(field);
         }
-
-        // New message format:
-        // id|chatId|senderId|content|createdAt|reported|edited|deleted|previousContent|editedAt|deletedAt
         if (field.length != 11) {
             throw new IllegalArgumentException(
                     "message record must contain 11 fields"

@@ -13,7 +13,7 @@ public class UserRepository {
     public synchronized List<User> loadAll() {
         List<User> users = new ArrayList<>();
         try {
-            List<String> lines = Files.readAllLines(DataPaths.USERS_FILE, StandardCharsets.UTF_8);
+            List<String> lines = Files.readAllLines(DataPaths.userfile, StandardCharsets.UTF_8);
             for (String line : lines) {
                 if (line == null || line.isBlank()) {
                     continue;
@@ -38,7 +38,7 @@ public class UserRepository {
         }
         try {
             Files.write(
-                    DataPaths.USERS_FILE,
+                    DataPaths.userfile,
                     lines,
                     StandardCharsets.UTF_8);
         } catch (IOException e) {

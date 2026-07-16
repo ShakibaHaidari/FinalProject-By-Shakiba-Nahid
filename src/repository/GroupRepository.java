@@ -15,7 +15,7 @@ public class GroupRepository {
         List<Group> groups = new ArrayList<>();
         try {
             List<String> lines = Files.readAllLines(
-                    DataPaths.GROUPS_FILE,
+                    DataPaths.groupfile,
                     StandardCharsets.UTF_8
             );
             for (String line : lines) {
@@ -44,7 +44,7 @@ public class GroupRepository {
         }
         try {
             Files.write(
-                    DataPaths.GROUPS_FILE, lines, StandardCharsets.UTF_8);
+                    DataPaths.groupfile, lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new IllegalStateException(
                     "Could not save groups in group.txt", e);

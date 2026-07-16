@@ -4,17 +4,21 @@ import com.sun.net.httpserver.HttpServer;
 import service.GroupService;
 import service.UserService;
 import service.MessageService;
+import service.SavedMessageService;
+import service.ChatSettingService;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SimpleHttpServer {
+public class SimpleHttpServer{
 
     private final UserService userService;
     private final GroupService groupService;
     private final MessageService messageService;
+    private final SavedMessageService savedMessageService;
+    private final ChatSettingService chatSettingService;
 
     private HttpServer server;
     private ExecutorService executor;
@@ -22,11 +26,14 @@ public class SimpleHttpServer {
     public SimpleHttpServer(
             UserService userService,
             GroupService groupService,
-            MessageService messageService) {
+            MessageService messageService,SavedMessageService savedMessageService, ChatSettingService chatSettingService){
 
         this.userService = userService;
         this.groupService = groupService;
         this.messageService = messageService;
+        this.savedMessageService = savedMessageService;
+        this.chatSettingService = chatSettingService;
+
     }
 
     public void start() throws Exception {
@@ -116,6 +123,29 @@ public class SimpleHttpServer {
                 "/api/messages/history",
                 new MessageHistoryHandler(messageService)
         );
+        server.createContext(
+                "/api/saved-messages",
+                new SavedMessagesHandler(savedMessageService)
+        );
+
+        server.createContext(
+                "/api/saved-messages/remove",
+                new RemoveSavedMessageHandler(savedMessageService)
+        );
+        server.createContext(
+                "/api/chats/pin",
+                new PinChatHandler(chatSettingService)
+        );
+
+        server.createContext(
+                "/api/chats/archive",
+                new ArchiveChatHandler(chatSettingService)
+        );
+
+        server.createContext(
+                "/api/chats/settings",
+                new ChatSettingsHandler(chatSettingService)
+        );
 
         server.start();
 
@@ -140,16 +170,17 @@ public class SimpleHttpServer {
                 "Messages API: GET/POST /api/messages"
         );
 
-        System.out.println(
-                "Report API: POST /api/messages/report"
-        );
+        System.out.println("Report API: POST /api/messages/report");
 
-        System.out.println(
-                "Groups API: GET /api/groups"
-        );
+        System.out.println("Groups API: GET /api/groups");
         System.out.println("Edit Message API: POST /api/messages/edit");
         System.out.println("Delete Message API: POST /api/messages/delete");
         System.out.println("Message History API: GET /api/messages/history");
+        System.out.println("Saved Messages API: GET/POST /api/saved-messages");
+        System.out.println("Remove Saved Message API: POST /api/saved-messages/remove");
+        System.out.println("Pin Chat API: POST /api/chats/pin");
+        System.out.println("Archive Chat API: POST /api/chats/archive");
+        System.out.println("Chat Settings API: GET /api/chats/settings");
     }
 
     public void stop() {

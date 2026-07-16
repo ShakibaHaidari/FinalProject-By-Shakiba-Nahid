@@ -1,21 +1,25 @@
 package repository;
-import model.Message;
+
+import model.ChatSetting;
 import storage.DataPaths;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-public class ReportRepository {
-    public synchronized List<String> loadAllMessageIds() {
+public class ChatSettingRepository {
 
-        List<String> messageIds = new ArrayList<>();
+    public synchronized List<ChatSetting> loadAll() {
+
+        List<ChatSetting> settings = new ArrayList<>();
 
         try {
             List<String> lines = Files.readAllLines(
-                    DataPaths.reportfilee,
+                    DataPaths.chatSettingFile,
                     StandardCharsets.UTF_8
             );
 
@@ -26,76 +30,96 @@ public class ReportRepository {
                 }
 
                 try {
-                    String messageId = lineMessageId(line);
+                    ChatSetting setting =
+                            lineChatSetting(line);
 
-                    if (!messageIds.contains(messageId)) {
-                        messageIds.add(messageId);
-                    }
+                    settings.add(setting);
 
                 } catch (Exception e) {
                     System.err.println(
-                            "Invalid report record: "
+                            "Invalid chat setting record: "
                                     + e.getMessage()
                     );
                 }
             }
 
-            return messageIds;
+            return settings;
 
         } catch (IOException e) {
             throw new IllegalStateException(
-                    "Could not load reports from reports.txt",
+                    "Could not load chat settings from chat_settings.txt",
                     e
             );
         }
     }
 
     public synchronized void saveAll(
-            List<Message> reportedMessages
+            List<ChatSetting> settings
     ) {
         List<String> lines = new ArrayList<>();
 
-        for (Message message : reportedMessages) {
-            lines.add(reportLine(message));
+        for (ChatSetting setting : settings) {
+            lines.add(chatSettingLine(setting));
         }
 
         try {
             Files.write(
-                    DataPaths.reportfilee,
+                    DataPaths.chatSettingFile,
                     lines,
                     StandardCharsets.UTF_8
             );
 
         } catch (IOException e) {
             throw new IllegalStateException(
-                    "Could not save reports in reports.txt",
+                    "Could not save chat settings in chat_settings.txt",
                     e
             );
         }
     }
 
-    private String reportLine(Message message) {
-
-        return encode(message.getId())
+    private String chatSettingLine(
+            ChatSetting setting
+    ) {
+        return encode(setting.getUserId())
                 + "|"
-                + encode(message.getChatId())
+                + encode(setting.getChatId())
                 + "|"
-                + encode(message.getSenderId())
+                + setting.isPinned()
                 + "|"
-                + message.getCreatedAt().toString();
+                + setting.isArchived()
+                + "|"
+                + setting.getUpdatedAt().toString();
     }
 
-    private String lineMessageId(String line) {
+    private ChatSetting lineChatSetting(String line) {
 
         String[] field = line.split("\\|", -1);
 
-        if (field.length != 4) {
+        if (field.length != 5) {
             throw new IllegalArgumentException(
-                    "report record must contain 4 fields"
+                    "chat setting record must contain 5 fields"
             );
         }
 
-        return decode(field[0]);
+        String userId = decode(field[0]);
+        String chatId = decode(field[1]);
+
+        boolean pinned =
+                Boolean.parseBoolean(field[2]);
+
+        boolean archived =
+                Boolean.parseBoolean(field[3]);
+
+        LocalDateTime updatedAt =
+                LocalDateTime.parse(field[4]);
+
+        return new ChatSetting(
+                userId,
+                chatId,
+                pinned,
+                archived,
+                updatedAt
+        );
     }
 
     private String encode(String value) {

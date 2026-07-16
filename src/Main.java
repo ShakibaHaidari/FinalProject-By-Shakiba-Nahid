@@ -4,7 +4,7 @@ import service.GroupService;
 import service.UserService;
 import service.MessageService;
 import storage.DataPaths;
-
+import websocket.WebSocketServer;
 public class Main {
 
     public static void main(String[] args) {
@@ -14,6 +14,13 @@ public class Main {
         MessageService messageService = new MessageService(groupService);
 
         SimpleHttpServer server = new SimpleHttpServer(userService, groupService, messageService);
+//        creat websocket
+        WebSocketServer webSocketServer =new WebSocketServer(9090,  messageService);
+        Thread webSocketThread = new Thread(() -> {
+            webSocketServer.start();
+        });
+
+        webSocketThread.start();
 
         AdminCLI adminCLI = new AdminCLI(userService, groupService);
 

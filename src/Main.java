@@ -7,6 +7,7 @@ import storage.DataPaths;
 import websocket.WebSocketServer;
 import service.SavedMessageService;
 import service.ChatSettingService;
+import service.BlockedUserService;
 public class Main {
 
     public static void main(String[] args) {
@@ -16,8 +17,9 @@ public class Main {
         MessageService messageService = new MessageService(groupService);
         SavedMessageService savedMessageService = new SavedMessageService(messageService);
         ChatSettingService chatSettingService = new ChatSettingService();
+        BlockedUserService blockedUserService = new BlockedUserService();
 
-        SimpleHttpServer server = new SimpleHttpServer(userService, groupService, messageService , savedMessageService,chatSettingService
+        SimpleHttpServer server = new SimpleHttpServer(userService, groupService, messageService , savedMessageService,chatSettingService,blockedUserService
         );
 //        creat websocket
         WebSocketServer webSocketServer =new WebSocketServer(9090,  messageService);

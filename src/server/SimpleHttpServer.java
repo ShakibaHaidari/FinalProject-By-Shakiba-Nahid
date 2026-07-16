@@ -6,6 +6,7 @@ import service.UserService;
 import service.MessageService;
 import service.SavedMessageService;
 import service.ChatSettingService;
+import service.BlockedUserService;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +20,7 @@ public class SimpleHttpServer{
     private final MessageService messageService;
     private final SavedMessageService savedMessageService;
     private final ChatSettingService chatSettingService;
+    private final BlockedUserService blockedUserService;
 
     private HttpServer server;
     private ExecutorService executor;
@@ -26,13 +28,14 @@ public class SimpleHttpServer{
     public SimpleHttpServer(
             UserService userService,
             GroupService groupService,
-            MessageService messageService,SavedMessageService savedMessageService, ChatSettingService chatSettingService){
+            MessageService messageService,SavedMessageService savedMessageService, ChatSettingService chatSettingService,BlockedUserService blockedUserService){
 
         this.userService = userService;
         this.groupService = groupService;
         this.messageService = messageService;
         this.savedMessageService = savedMessageService;
         this.chatSettingService = chatSettingService;
+        this.blockedUserService = blockedUserService;
 
     }
 
@@ -146,6 +149,20 @@ public class SimpleHttpServer{
                 "/api/chats/settings",
                 new ChatSettingsHandler(chatSettingService)
         );
+        server.createContext(
+                "/api/users/block",
+                new BlockUserHandler(blockedUserService)
+        );
+
+        server.createContext(
+                "/api/users/unblock",
+                new UnblockUserHandler(blockedUserService)
+        );
+
+        server.createContext(
+                "/api/users/blocked",
+                new BlockedUsersHandler(blockedUserService)
+        );
 
         server.start();
 
@@ -181,6 +198,9 @@ public class SimpleHttpServer{
         System.out.println("Pin Chat API: POST /api/chats/pin");
         System.out.println("Archive Chat API: POST /api/chats/archive");
         System.out.println("Chat Settings API: GET /api/chats/settings");
+        System.out.println("Block User API: POST /api/users/block");
+        System.out.println("Unblock User API: POST /api/users/unblock");
+        System.out.println("Blocked Users API: GET /api/users/blocked");
     }
 
     public void stop() {

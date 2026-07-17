@@ -202,11 +202,98 @@ The administrator can:
  Change a user's password
  Change a group's name
 
-9. Current Limitation
+Phase 2 :
+After completing the first part of the backend implementation, we continued working on the second phase of the Chat Web Application. In this part, our main focus was to make the backend more complete, add file-based persistence, improve message features, and prepare the backend for connection with the frontend.
 
-In this phase, users, groups, and messages are stored in memory.
+File-Based Storage System
 
-Therefore, all data is removed when the application is stopped and started again.
+In this step, we added a file-based storage system for the project. A data folder is created automatically when the server starts. Inside this folder, different text files are used to save the application data.
+
+We created files for users, groups, messages, reports, saved messages, chat settings, blocked users, and reactions. Because of this, the project data is not lost after stopping and restarting the server.
+
+User and Group Persistence
+
+We added persistence for users and groups. Before this, users and groups were only stored in memory. After restarting the server, the data would be lost. Now users are saved in a text file, and groups are also saved with their members.
+
+When the server starts, the repositories load the saved data from the files. When the admin adds, removes, or updates users and groups, the files are updated again.
+
+Message Persistence and Encryption
+
+We added message persistence using messages.txt. Messages are now saved in the file after being sent.
+
+We also added encryption for message content. This means that when someone opens the message file, the real message text cannot be read directly. This improves the security of the chat system.
+
+Reported Messages
+
+We implemented the report message feature. Users can report a message, and the reported message information is saved in reports.txt.
+
+The admin can see reported messages from the CLI menu. Also, after restarting the server, the reported messages are loaded again from the file.
+
+Anti-Spam Feature
+
+We added an anti-spam system to prevent users from sending too many messages very quickly. A user cannot send more than 5 messages in one second.
+
+If the user sends more than the allowed number of messages, the server rejects the new message. This helps make the chat system safer and more stable.
+
+Edit, Delete, and Message History
+
+We added the ability to edit and delete messages. A user can only edit or delete their own message.
+
+When a message is edited, the old content is saved as previous content. When a message is deleted, it is not removed completely from the file. Instead, it is marked as deleted and shown as:
+
+[deleted message]
+
+We also added a message history feature. This allows the system to show edited and deleted messages with their previous content and time information.
+
+WebSocket Support
+
+We added WebSocket support for real-time messaging. The WebSocket server runs on port 9090.
+
+When a message is sent through WebSocket, it goes to the MessageService, gets saved in messages.txt, and then the server sends a JSON response back to the client. This makes the backend ready for real-time chat in the frontend.
+
+Saved Messages
+
+We implemented the Saved Messages feature. Users can save important messages and view them later.
+
+The saved message data is stored in saved_messages.txt. We also created APIs to save a message, get saved messages, and remove a saved message.
+
+Pin and Archive Chat
+
+We added chat settings for pinning and archiving chats. This information is saved in chat_settings.txt.
+
+This feature helps the frontend show pinned chats at the top and move archived chats to a separate archive section.
+
+Block and Unblock User
+
+We added a block user feature. A user can block another user, unblock them, and get the list of blocked users.
+
+The blocked user data is stored in blocked_users.txt, so the information remains saved after restarting the server.
+
+Bonus Feature: Message Reactions
+
+For the bonus part of phase 2, we started implementing message reactions. Users can react to messages using reactions like:
+
+LIKE
+LOVE
+HAHA
+SAD
+ANGRY
+
+The reaction data is stored in reactions.txt. We created the model, repository, and service for this feature. This makes the chat system more interactive.
+
+Testing
+
+We tested the backend using PowerShell commands and a simple WebSocket HTML test file. We tested message sending, saving, encryption, reporting, editing, deleting, message history, WebSocket connection, saved messages, pin/archive, block/unblock, and reactions.
+
+We also tested some features after restarting the server to make sure the data was loaded correctly from the text files.
+
+GitHub Progress
+
+After completing each important feature, we committed and pushed the changes to GitHub. This helped us save our progress and keep the project updated for both backend and frontend team members.
+
+Summary
+
+In this continued part of the project, the backend became much more complete. We added persistent storage, encrypted messages, WebSocket support, saved messages, pin and archive features, blocked users, and a bonus reaction feature. The backend is now ready to be connected with the frontend and used for the final version of the Chat Web Application.
 
 
 گزارش کار پروژه chat Web

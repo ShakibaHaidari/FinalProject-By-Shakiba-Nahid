@@ -1,28 +1,392 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
   <title>Settings</title>
-  <link rel="stylesheet" href="Setting.css">
+
+  <link rel="stylesheet"
+        href="Setting.css">
+
 </head>
 
 <body>
 
 <div class="header">
-  <h2>Settings</h2>
-  <a href="home.html">←</a>
+
+  <a href="Home.html"
+     class="back">
+
+    ←
+
+  </a>
+
+  <div>
+
+    <h2>Settings</h2>
+
+    <p>Manage your account</p>
+
+  </div>
+
 </div>
 
-<div class="settings-box">
-  <button>Change Profile Picture</button>
-  <button>Change Username</button>
-  <button>Change User ID</button>
-  <button>Dark / Light Mode</button>
 
-  <button class="delete" onclick="deleteAccount()">Delete Account</button>
-  <button onclick="logout()">Logout</button>
+<div class="page">
+
+  <div class="profile-card">
+
+    <div class="profile-picture"
+         id="profilePicture">
+
+      M
+
+    </div>
+
+
+    <div class="profile-information">
+
+      <h2 id="profileUsername">
+
+        Loading...
+
+      </h2>
+
+      <p id="profileId">
+
+        User ID:
+
+      </p>
+
+
+      <label for="profileInput"
+             class="picture-label">
+
+        Select Profile Picture
+
+      </label>
+
+
+      <input
+              id="profileInput"
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+      >
+
+
+      <div class="profile-buttons">
+
+        <button
+                id="savePictureBtn"
+                class="save-picture-button"
+                type="button">
+
+          Save Picture
+
+        </button>
+
+
+        <button
+                id="removePictureBtn"
+                class="remove-picture-button"
+                type="button">
+
+          Remove Picture
+
+        </button>
+
+      </div>
+
+
+      <p class="picture-help">
+
+        PNG, JPG or WebP.
+        Maximum size: 1 MB.
+
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <p id="pageMessage"></p>
+
+
+  <div class="setting-card">
+
+    <h3>Change Username</h3>
+
+    <p class="description">
+
+      Enter a new username for your account.
+
+    </p>
+
+
+    <label for="newUsername">
+
+      New Username
+
+    </label>
+
+
+    <input
+            id="newUsername"
+            type="text"
+            placeholder="Enter new username"
+    >
+
+
+    <button
+            id="changeUsernameBtn"
+            class="main-button"
+            type="button">
+
+      Save Username
+
+    </button>
+
+  </div>
+
+
+  <div class="setting-card id-card">
+
+    <h3>Change User ID</h3>
+
+    <p class="description">
+
+      Your User ID is used to identify your account
+      and create personal chats.
+
+    </p>
+
+
+    <label for="newUserId">
+
+      New User ID
+
+    </label>
+
+
+    <input
+            id="newUserId"
+            type="text"
+            placeholder="Example: m20"
+    >
+
+
+    <label for="idPassword">
+
+      Current Password
+
+    </label>
+
+
+    <input
+            id="idPassword"
+            type="password"
+            placeholder="Enter current password"
+    >
+
+
+    <p class="id-help">
+
+      User ID can contain letters, numbers,
+      underscore and dash.
+
+    </p>
+
+
+    <button
+            id="changeUserIdBtn"
+            class="main-button"
+            type="button">
+
+      Change User ID
+
+    </button>
+
+  </div>
+
+
+  <div class="setting-card">
+
+    <h3>Change Password</h3>
+
+    <p class="description">
+
+      Enter your current and new password.
+
+    </p>
+
+
+    <label for="currentPassword">
+
+      Current Password
+
+    </label>
+
+
+    <input
+            id="currentPassword"
+            type="password"
+            placeholder="Enter current password"
+    >
+
+
+    <label for="newPassword">
+
+      New Password
+
+    </label>
+
+
+    <input
+            id="newPassword"
+            type="password"
+            placeholder="Enter new password"
+    >
+
+
+    <label for="repeatPassword">
+
+      Repeat New Password
+
+    </label>
+
+
+    <input
+            id="repeatPassword"
+            type="password"
+            placeholder="Repeat new password"
+    >
+
+
+    <p class="password-help">
+
+      Password must have at least 8 characters,
+      uppercase, lowercase, number and special character.
+
+    </p>
+
+
+    <button
+            id="changePasswordBtn"
+            class="main-button"
+            type="button">
+
+      Change Password
+
+    </button>
+
+  </div>
+
+
+  <div class="setting-card">
+
+    <h3>Appearance</h3>
+
+
+    <div class="theme-row">
+
+      <div>
+
+        <p class="theme-title">
+
+          Dark Mode
+
+        </p>
+
+        <p class="description">
+
+          Change the website appearance.
+
+        </p>
+
+      </div>
+
+
+      <label class="switch">
+
+        <input
+                id="darkMode"
+                type="checkbox"
+        >
+
+        <span class="slider"></span>
+
+      </label>
+
+    </div>
+
+  </div>
+
+
+  <div class="setting-card">
+
+    <h3>Account</h3>
+
+
+    <button
+            id="logoutBtn"
+            class="logout-button"
+            type="button">
+
+      Logout
+
+    </button>
+
+  </div>
+
+
+  <div class="setting-card danger-card">
+
+    <h3>Delete Account</h3>
+
+    <p class="description">
+
+      Enter your current password before
+      deleting the account.
+
+    </p>
+
+
+    <label for="deletePassword">
+
+      Current Password
+
+    </label>
+
+
+    <input
+            id="deletePassword"
+            type="password"
+            placeholder="Enter current password"
+    >
+
+
+    <button
+            id="deleteAccountBtn"
+            class="delete-button"
+            type="button">
+
+      Delete Account
+
+    </button>
+
+  </div>
+
 </div>
 
-<script src="Settings.js"></script>
+
+<script src="Setting.js"></script>
 
 </body>
+
 </html>

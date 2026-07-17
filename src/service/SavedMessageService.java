@@ -13,10 +13,13 @@ public class SavedMessageService {
     private final SavedMessageRepository savedMessageRepository;
     private final MessageService messageService;
 
+
     public SavedMessageService(
             MessageService messageService
     ) {
-        this.messageService = messageService;
+
+        this.messageService =
+                messageService;
 
         this.savedMessageRepository =
                 new SavedMessageRepository();
@@ -33,24 +36,39 @@ public class SavedMessageService {
         );
     }
 
+
     public synchronized boolean saveMessage(
             String userId,
             String messageId
     ) {
-        if (isBlank(userId) || isBlank(messageId)) {
+
+        if (isBlank(userId)
+                || isBlank(messageId)) {
+
             return false;
         }
+
 
         Message message =
-                messageService.getMessageById(messageId);
+                messageService.getMessageById(
+                        messageId
+                );
+
 
         if (message == null) {
+
             return false;
         }
 
-        if (isAlreadySaved(userId, messageId)) {
+
+        if (isAlreadySaved(
+                userId,
+                messageId
+        )) {
+
             return false;
         }
+
 
         SavedMessage savedMessage =
                 new SavedMessage(
@@ -58,102 +76,166 @@ public class SavedMessageService {
                         messageId
                 );
 
-        savedMessages.add(savedMessage);
+
+        savedMessages.add(
+                savedMessage
+        );
 
         persistSavedMessages();
 
         return true;
     }
+
 
     public synchronized boolean removeSavedMessage(
             String userId,
             String messageId
     ) {
-        SavedMessage found = null;
 
-        for (SavedMessage savedMessage : savedMessages) {
+        SavedMessage found =
+                null;
+
+
+        for (SavedMessage savedMessage
+                : savedMessages) {
 
             boolean sameUser =
                     savedMessage
                             .getUserId()
-                            .equalsIgnoreCase(userId);
+                            .equalsIgnoreCase(
+                                    userId
+                            );
 
             boolean sameMessage =
                     savedMessage
                             .getMessageId()
-                            .equalsIgnoreCase(messageId);
+                            .equalsIgnoreCase(
+                                    messageId
+                            );
 
-            if (sameUser && sameMessage) {
-                found = savedMessage;
+
+            if (sameUser
+                    && sameMessage) {
+
+                found =
+                        savedMessage;
+
                 break;
             }
         }
 
+
         if (found == null) {
+
             return false;
         }
 
-        savedMessages.remove(found);
+
+        savedMessages.remove(
+                found
+        );
 
         persistSavedMessages();
 
         return true;
     }
 
+
     public synchronized List<Message> getSavedMessages(
             String userId
     ) {
-        List<Message> result = new ArrayList<>();
 
-        for (SavedMessage savedMessage : savedMessages) {
+        List<Message> result =
+                new ArrayList<>();
+
+
+        for (SavedMessage savedMessage
+                : savedMessages) {
 
             if (savedMessage
                     .getUserId()
-                    .equalsIgnoreCase(userId)) {
+                    .equalsIgnoreCase(
+                            userId
+                    )) {
 
                 Message message =
                         messageService.getMessageById(
                                 savedMessage.getMessageId()
                         );
 
+
                 if (message != null) {
-                    result.add(message);
+
+                    result.add(
+                            message
+                    );
                 }
             }
         }
 
+
         return result;
     }
+
+
+    public synchronized void reloadData() {
+
+        savedMessages.clear();
+
+        savedMessages.addAll(
+                savedMessageRepository.loadAll()
+        );
+    }
+
 
     private boolean isAlreadySaved(
             String userId,
             String messageId
     ) {
-        for (SavedMessage savedMessage : savedMessages) {
+
+        for (SavedMessage savedMessage
+                : savedMessages) {
 
             boolean sameUser =
                     savedMessage
                             .getUserId()
-                            .equalsIgnoreCase(userId);
+                            .equalsIgnoreCase(
+                                    userId
+                            );
 
             boolean sameMessage =
                     savedMessage
                             .getMessageId()
-                            .equalsIgnoreCase(messageId);
+                            .equalsIgnoreCase(
+                                    messageId
+                            );
 
-            if (sameUser && sameMessage) {
+
+            if (sameUser
+                    && sameMessage) {
+
                 return true;
             }
         }
 
+
         return false;
     }
 
+
     private void persistSavedMessages() {
-        savedMessageRepository.saveAll(savedMessages);
+
+        savedMessageRepository.saveAll(
+                savedMessages
+        );
     }
 
-    private boolean isBlank(String value) {
-        return value == null || value.isBlank();
+
+    private boolean isBlank(
+            String value
+    ) {
+
+        return value == null
+                || value.isBlank();
     }
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Saved Messages</title>
+
+    <link rel="stylesheet"
+          href="SavedMessages.css">
+</head>
+
+<body>
+
+<div class="header">
+
+    <a href="Home.html"
+       class="back">
+        ←
+    </a>
+
+    <div>
+        <h2>Saved Messages</h2>
+
+        <p>
+            Your saved messages
+        </p>
+    </div>
+
+    <button id="refreshBtn">
+        Refresh
+    </button>
+
+</div>
+
+
+<div class="page">
+
+    <div class="search-box">
+
+        <input
+                id="search"
+                type="text"
+                placeholder="Search saved messages"
+        >
+
+    </div>
+
+
+    <div id="savedList"
+         class="saved-list">
+
+        <p class="loading">
+            Loading saved messages...
+        </p>
+
+    </div>
+
+
+    <p id="message"></p>
+
+</div>
+
+
+<script src="SavedMessages.js"></script>
+
+</body>
+
+</html>

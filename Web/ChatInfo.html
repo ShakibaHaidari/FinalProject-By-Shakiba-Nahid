@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Chat Information</title>
+
+    <link rel="stylesheet"
+          href="ChatInfo.css">
+</head>
+
+<body>
+
+<div class="header">
+
+    <a id="backBtn"
+       class="back"
+       href="Home.html">
+        ←
+    </a>
+
+    <div>
+
+        <h2>Chat Information</h2>
+
+        <p>
+            Manage this chat
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="page">
+
+    <div class="profile-card">
+
+        <div id="infoPicture"
+             class="info-picture">
+            ?
+        </div>
+
+        <div class="profile-text">
+
+            <h2 id="infoName">
+                Loading...
+            </h2>
+
+            <p id="infoId"></p>
+
+            <p id="infoSubtitle"></p>
+
+        </div>
+
+    </div>
+
+
+    <p id="pageMessage"></p>
+
+
+    <p id="loading"
+       class="loading">
+
+        Loading information...
+
+    </p>
+
+
+    <div id="userSection"
+         class="hidden-section">
+
+        <div class="card">
+
+            <h3>Common Groups</h3>
+
+            <div id="commonGroups"></div>
+
+        </div>
+
+
+        <div class="card action-list">
+
+            <button id="contactBtn"
+                    class="main-button">
+
+                Add to Contacts
+
+            </button>
+
+            <button id="blockBtn"
+                    class="light-danger-button">
+
+                Block User
+
+            </button>
+
+            <button id="archiveUserBtn"
+                    class="light-button">
+
+                Add to Archive
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div id="groupSection"
+         class="hidden-section">
+        <div class="card">
+
+            <h3>Group Picture</h3>
+
+            <p class="description">
+
+                Select a picture for this group.
+
+            </p>
+
+            <input
+                    id="groupPictureInput"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+            >
+
+            <div class="group-picture-buttons">
+
+                <button id="saveGroupPictureBtn"
+                        class="main-button">
+
+                    Save Picture
+
+                </button>
+
+                <button id="removeGroupPictureBtn"
+                        class="light-button">
+
+                    Remove Picture
+
+                </button>
+
+            </div>
+
+            <p class="picture-help">
+
+                PNG, JPG or WebP.
+                Maximum size: 1 MB.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Members</h3>
+
+            <div id="membersList"></div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Add Member</h3>
+
+            <p class="description">
+
+                Enter the User ID of the person
+                you want to add.
+
+            </p>
+
+            <input
+                    id="memberIdInput"
+                    type="text"
+                    placeholder="Example: m7"
+            >
+
+            <button id="addMemberBtn"
+                    class="main-button">
+
+                Add Member
+
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Edit Group Name</h3>
+
+            <input
+                    id="newGroupName"
+                    type="text"
+                    placeholder="New group name"
+            >
+
+            <button id="changeGroupNameBtn"
+                    class="main-button">
+
+                Save Group Name
+
+            </button>
+
+        </div>
+
+
+        <div class="card action-list">
+
+            <button id="groupHistoryBtn"
+                    class="main-button">
+
+                History
+
+            </button>
+
+            <button id="archiveGroupBtn"
+                    class="light-button">
+
+                Add to Archive
+
+            </button>
+
+            <button id="leaveGroupBtn"
+                    class="danger-button">
+
+                Leave Group
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="ChatInfo.js"></script>
+
+</body>
+
+</html>

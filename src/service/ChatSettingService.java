@@ -1,4 +1,3 @@
-
 package service;
 
 import model.ChatSetting;
@@ -11,6 +10,7 @@ public class ChatSettingService {
 
     private final List<ChatSetting> settings;
     private final ChatSettingRepository chatSettingRepository;
+
 
     public ChatSettingService() {
 
@@ -29,136 +29,234 @@ public class ChatSettingService {
         );
     }
 
+
     public synchronized boolean setPinned(
             String userId,
             String chatId,
             boolean pinned
     ) {
-        if (isBlank(userId) || isBlank(chatId)) {
+
+        if (isBlank(userId)
+                || isBlank(chatId)) {
+
             return false;
         }
 
-        ChatSetting setting =
-                getOrCreateSetting(userId, chatId);
 
-        setting.setPinned(pinned);
+        ChatSetting setting =
+                getOrCreateSetting(
+                        userId,
+                        chatId
+                );
+
+
+        setting.setPinned(
+                pinned
+        );
 
         persistSettings();
 
         return true;
     }
+
 
     public synchronized boolean setArchived(
             String userId,
             String chatId,
             boolean archived
     ) {
-        if (isBlank(userId) || isBlank(chatId)) {
+
+        if (isBlank(userId)
+                || isBlank(chatId)) {
+
             return false;
         }
 
-        ChatSetting setting =
-                getOrCreateSetting(userId, chatId);
 
-        setting.setArchived(archived);
+        ChatSetting setting =
+                getOrCreateSetting(
+                        userId,
+                        chatId
+                );
+
+
+        setting.setArchived(
+                archived
+        );
 
         persistSettings();
 
         return true;
     }
 
-    public synchronized List<ChatSetting> getSettingsByUserId(
+
+    public synchronized List<ChatSetting>
+    getSettingsByUserId(
             String userId
     ) {
-        List<ChatSetting> result = new ArrayList<>();
 
-        for (ChatSetting setting : settings) {
+        List<ChatSetting> result =
+                new ArrayList<>();
+
+
+        for (ChatSetting setting
+                : settings) {
 
             if (setting
                     .getUserId()
-                    .equalsIgnoreCase(userId)) {
+                    .equalsIgnoreCase(
+                            userId
+                    )) {
 
-                result.add(setting);
+                result.add(
+                        setting
+                );
             }
         }
+
 
         return result;
     }
 
-    public synchronized List<ChatSetting> getPinnedChats(
+
+    public synchronized List<ChatSetting>
+    getPinnedChats(
             String userId
     ) {
-        List<ChatSetting> result = new ArrayList<>();
 
-        for (ChatSetting setting : settings) {
+        List<ChatSetting> result =
+                new ArrayList<>();
+
+
+        for (ChatSetting setting
+                : settings) {
 
             boolean sameUser =
                     setting
                             .getUserId()
-                            .equalsIgnoreCase(userId);
+                            .equalsIgnoreCase(
+                                    userId
+                            );
 
-            if (sameUser && setting.isPinned()) {
-                result.add(setting);
+
+            if (sameUser
+                    && setting.isPinned()) {
+
+                result.add(
+                        setting
+                );
             }
         }
+
 
         return result;
     }
 
-    public synchronized List<ChatSetting> getArchivedChats(
+
+    public synchronized List<ChatSetting>
+    getArchivedChats(
             String userId
     ) {
-        List<ChatSetting> result = new ArrayList<>();
 
-        for (ChatSetting setting : settings) {
+        List<ChatSetting> result =
+                new ArrayList<>();
+
+
+        for (ChatSetting setting
+                : settings) {
 
             boolean sameUser =
                     setting
                             .getUserId()
-                            .equalsIgnoreCase(userId);
+                            .equalsIgnoreCase(
+                                    userId
+                            );
 
-            if (sameUser && setting.isArchived()) {
-                result.add(setting);
+
+            if (sameUser
+                    && setting.isArchived()) {
+
+                result.add(
+                        setting
+                );
             }
         }
 
+
         return result;
     }
+
+
+    public synchronized void reloadData() {
+
+        settings.clear();
+
+        settings.addAll(
+                chatSettingRepository.loadAll()
+        );
+    }
+
 
     private ChatSetting getOrCreateSetting(
             String userId,
             String chatId
     ) {
-        for (ChatSetting setting : settings) {
+
+        for (ChatSetting setting
+                : settings) {
 
             boolean sameUser =
                     setting
                             .getUserId()
-                            .equalsIgnoreCase(userId);
+                            .equalsIgnoreCase(
+                                    userId
+                            );
 
             boolean sameChat =
                     setting
                             .getChatId()
-                            .equalsIgnoreCase(chatId);
+                            .equalsIgnoreCase(
+                                    chatId
+                            );
 
-            if (sameUser && sameChat) {
+
+            if (sameUser
+                    && sameChat) {
+
                 return setting;
             }
         }
 
-        ChatSetting newSetting =
-                new ChatSetting(userId, chatId);
 
-        settings.add(newSetting);
+        ChatSetting newSetting =
+                new ChatSetting(
+                        userId,
+                        chatId
+                );
+
+
+        settings.add(
+                newSetting
+        );
+
 
         return newSetting;
     }
 
+
     private void persistSettings() {
-        chatSettingRepository.saveAll(settings);
+
+        chatSettingRepository.saveAll(
+                settings
+        );
     }
 
-    private boolean isBlank(String value) {
-        return value == null || value.isBlank();
+
+    private boolean isBlank(
+            String value
+    ) {
+
+        return value == null
+                || value.isBlank();
     }
 }

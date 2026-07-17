@@ -1,0 +1,328 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    background-color: #f7f2f7;
+    color: #333333;
+
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    padding: 18px 22px;
+
+    background-color: #c8a2c8;
+    color: white;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+.back {
+    color: white;
+
+    font-size: 30px;
+
+    text-decoration: none;
+}
+
+.header h2 {
+    margin: 0 0 5px 0;
+
+    font-size: 22px;
+}
+
+.header p {
+    margin: 0;
+
+    font-size: 13px;
+}
+
+.page {
+    width: 100%;
+    max-width: 760px;
+
+    margin: auto;
+
+    padding: 22px;
+}
+
+.profile-card,
+.card {
+    margin-bottom: 18px;
+
+    padding: 20px;
+
+    background-color: white;
+
+    border-radius: 15px;
+
+    box-shadow: 0 2px 9px
+    rgba(0, 0, 0, 0.08);
+}
+
+.profile-card {
+    display: flex;
+    align-items: center;
+
+    gap: 17px;
+}
+
+.info-picture {
+    min-width: 78px;
+    width: 78px;
+    height: 78px;
+
+    border-radius: 50%;
+
+    background-color: #c8a2c8;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 31px;
+    font-weight: bold;
+}
+
+.profile-text h2 {
+    margin: 0 0 8px 0;
+
+    color: #4b3a4b;
+}
+
+.profile-text p {
+    margin: 5px 0;
+
+    color: #777777;
+
+    font-size: 14px;
+}
+
+#pageMessage {
+    min-height: 20px;
+
+    margin: 0 0 12px 0;
+
+    text-align: center;
+
+    font-size: 14px;
+}
+
+.loading,
+.empty-text {
+    color: #777777;
+
+    text-align: center;
+}
+
+.hidden-section {
+    display: none;
+}
+
+.card h3 {
+    margin: 0 0 14px 0;
+
+    color: #6b4d6b;
+
+    font-size: 18px;
+}
+
+.description {
+    margin: -5px 0 14px 0;
+
+    color: #777777;
+
+    font-size: 13px;
+}
+
+.card input {
+    width: 100%;
+
+    padding: 12px 13px;
+
+    margin-bottom: 12px;
+
+    border: 1px solid #dddddd;
+    border-radius: 9px;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+.card input:focus {
+    border-color: #c8a2c8;
+}
+
+.main-button,
+.light-button,
+.light-danger-button,
+.danger-button {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 9px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.main-button {
+    background-color: #c8a2c8;
+    color: white;
+}
+
+.main-button:hover {
+    background-color: #b48fb4;
+}
+
+.light-button {
+    background-color: #eee4ee;
+    color: #674d67;
+}
+
+.light-danger-button {
+    background-color: #f7e5e5;
+    color: #a33f3f;
+}
+
+.danger-button {
+    background-color: #d65c5c;
+    color: white;
+}
+
+.action-list {
+    display: grid;
+
+    gap: 10px;
+}
+
+.small-item,
+.member-row {
+    margin-bottom: 10px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    background-color: #faf7fa;
+}
+
+.member-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 12px;
+}
+
+.member-row h4 {
+    margin: 0 0 5px 0;
+
+    color: #444444;
+}
+
+.member-row p {
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 12px;
+}
+
+.small-danger-button {
+    padding: 8px 10px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #f1dddd;
+    color: #9f4040;
+
+    cursor: pointer;
+}
+
+@media (max-width: 550px) {
+
+    .page {
+        padding: 16px;
+    }
+
+    .info-picture {
+        min-width: 65px;
+        width: 65px;
+        height: 65px;
+
+        font-size: 26px;
+    }
+}
+#groupPictureInput {
+    width: 100%;
+
+    margin-bottom: 13px;
+
+    color: #666666;
+
+    font-size: 13px;
+}
+
+#groupPictureInput::file-selector-button {
+    padding: 8px 12px;
+
+    margin-right: 8px;
+
+    border: 1px solid #c8a2c8;
+    border-radius: 8px;
+
+    background-color: white;
+    color: #765476;
+
+    cursor: pointer;
+}
+
+#groupPictureInput::file-selector-button:hover {
+    background-color: #faf4fa;
+}
+
+.group-picture-buttons {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+.picture-help {
+    margin: 11px 0 0;
+
+    color: #888888;
+
+    font-size: 11px;
+}
+
+.group-picture-buttons button:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+@media (max-width: 500px) {
+
+    .group-picture-buttons {
+        grid-template-columns: 1fr;
+    }
+}

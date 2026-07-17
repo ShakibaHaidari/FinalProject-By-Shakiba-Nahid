@@ -1,26 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Chat Web - Chat</title>
-    <link rel="stylesheet" href="chat.css">
-    <script src="Chat.js" defer></script>
+
+    <link rel="stylesheet"
+          href="Chat.css">
 </head>
+
 <body>
-<div class="chat-header">
-    <a href="home.html">←</a>
 
-    <div>
-        <h3>Group Chat</h3>
-        <p id="chatStatus">Loading...</p>
+<div class="chat-page">
+
+    <div class="chat-header">
+
+        <a href="Home.html"
+           class="back">
+            ←
+        </a>
+
+        <div class="chat-info-link"
+             id="chatInfoLink">
+
+            <div class="chat-profile"
+                 id="chatProfile">
+                ?
+            </div>
+
+            <div class="chat-title">
+
+                <h3 id="chatName">
+                    Chat
+                </h3>
+
+                <p id="chatStatus">
+                    Loading...
+                </p>
+
+            </div>
+
+        </div>
+
+        <button id="historyBtn"
+                class="history-btn">
+
+            History
+
+        </button>
+
     </div>
+
+
+    <div class="message-search-box">
+
+        <input
+                id="messageSearch"
+                type="text"
+                placeholder="Search messages"
+        >
+
+        <button id="clearSearchBtn"
+                type="button">
+
+            Clear
+
+        </button>
+
+    </div>
+
+    <p id="searchResult"></p>
+
+
+    <div class="messages"
+         id="messages">
+
+        <p class="loading"
+           id="loading">
+
+            Loading messages...
+
+        </p>
+
+    </div>
+
+
+    <div class="bottom">
+
+        <p id="messageStatus"></p>
+
+
+        <div class="media-select-row">
+
+            <label for="mediaInput"
+                   class="select-media-button">
+
+                📎 Select File
+
+            </label>
+
+            <input
+                    id="mediaInput"
+                    type="file"
+            >
+
+            <span id="selectedMediaName">
+
+                No file selected
+
+            </span>
+
+        </div>
+
+
+        <div id="selectedMediaPreview"
+             class="selected-media-preview">
+
+        </div>
+
+
+        <div class="media-action-row">
+
+            <button id="sendMediaButton"
+                    type="button">
+
+                Send File
+
+            </button>
+
+            <button id="clearMediaButton"
+                    type="button">
+
+                Clear File
+
+            </button>
+
+        </div>
+
+
+        <p class="media-help">
+
+            Maximum file size: 5 MB
+
+        </p>
+
+
+        <div class="send-box">
+
+            <input
+                    id="message"
+                    type="text"
+                    maxlength="500"
+                    placeholder="Write a message"
+            >
+
+            <button id="sendButton"
+                    type="button">
+
+                Send
+
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="messages" id="messages"></div>
-<div class="send-box">
-    <input id="message" type="text" placeholder="Write a message">
-    <button id="sendButton" type="button">Send</button>
-</div>
-<p id="messageStatus"></p>
+
+<script src="Chat.js"></script>
+<script src="ChatMedia.js"></script>
+
 </body>
+
 </html>

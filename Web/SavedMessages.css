@@ -1,0 +1,202 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    background-color: #f7f2f7;
+
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    background-color: #c8a2c8;
+    color: white;
+
+    padding: 17px 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+.back {
+    color: white;
+
+    font-size: 30px;
+
+    text-decoration: none;
+}
+
+.header h2 {
+    margin: 0 0 5px 0;
+
+    font-size: 21px;
+}
+
+.header p {
+    margin: 0;
+
+    font-size: 13px;
+}
+
+#refreshBtn {
+    margin-left: auto;
+
+    padding: 8px 13px;
+
+    border: 1px solid white;
+    border-radius: 8px;
+
+    background-color: transparent;
+    color: white;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+#refreshBtn:hover {
+    background-color: white;
+    color: #7d4f7d;
+}
+
+.page {
+    max-width: 750px;
+
+    margin: auto;
+
+    padding: 20px;
+}
+
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #dddddd;
+    border-radius: 12px;
+
+    background-color: white;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: #c8a2c8;
+}
+
+.saved-list {
+    width: 100%;
+}
+
+.saved-message {
+    margin-bottom: 15px;
+
+    padding: 17px;
+
+    background-color: white;
+
+    border-radius: 15px;
+
+    box-shadow: 0 2px 8px
+    rgba(0, 0, 0, 0.08);
+}
+
+.saved-message:hover {
+    background-color: #fdfafd;
+}
+
+.message-content {
+    margin: 0 0 13px 0;
+
+    color: #333333;
+
+    line-height: 23px;
+
+    word-break: break-word;
+
+    font-size: 16px;
+}
+
+.message-details {
+    padding-top: 10px;
+
+    border-top: 1px solid #eeeeee;
+}
+
+.message-details p {
+    margin: 5px 0;
+
+    color: #777777;
+
+    font-size: 12px;
+}
+
+.message-details .message-status {
+    color: #9a659a;
+
+    font-weight: bold;
+}
+
+.saved-actions {
+    margin-top: 13px;
+
+    display: flex;
+
+    gap: 9px;
+}
+
+.saved-actions button {
+    padding: 8px 13px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+}
+
+.open-chat {
+    background-color: #c8a2c8;
+    color: white;
+}
+
+.open-chat:hover {
+    background-color: #b48fb4;
+}
+
+.remove-saved {
+    background-color: #eeeeee;
+    color: #555555;
+}
+
+.remove-saved:hover {
+    background-color: #dddddd;
+}
+
+.loading,
+.empty {
+    margin-top: 35px;
+
+    text-align: center;
+
+    color: #777777;
+}
+
+#message {
+    min-height: 20px;
+
+    text-align: center;
+
+    color: red;
+}

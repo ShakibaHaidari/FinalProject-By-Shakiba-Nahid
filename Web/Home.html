@@ -3,51 +3,90 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
   <title>Chat Web Home</title>
+
   <link rel="stylesheet" href="Home.css">
 </head>
 
 <body>
 
 <div class="header">
-  <h2>Chat Web</h2>
-  <a href="#" id="settingsBtn">⚙</a>
-</div>
 
-<div class="search">
-  <input type="text" placeholder="Search chats">
-</div>
+  <div>
+    <h2>Chat Web</h2>
 
-<div class="chat-list">
-
-  <!-- Ali Chat -->
-  <div class="chat" onclick="window.location.href='Chat.html'">
-    <div class="profile"></div>
-
-    <div>
-      <h3>Ali</h3>
-      <p>Hello...</p>
-    </div>
+    <p id="welcome">
+      Welcome
+    </p>
   </div>
 
-  <!-- Group Chat -->
-  <div class="chat" onclick="window.location.href='Chat.html'">
-    <div class="profile"></div>
+  <a href="Setting.html"
+     id="settingsBtn">
+    ⚙
+  </a>
 
-    <div>
-      <h3>Group Chat</h3>
-      <p>Last message</p>
-    </div>
+</div>
+
+
+<div class="page">
+
+  <div class="page-links">
+
+    <a href="SavedMessages.html"
+       class="page-link">
+
+      ★ Saved Messages
+    </a>
+
+    <a href="Archive.html"
+       class="page-link">
+
+      Archive
+    </a>
+
+  </div>
+
+
+  <div class="search">
+
+    <input
+            id="search"
+            type="text"
+            placeholder="Search chats"
+    >
+
+  </div>
+
+
+  <p id="homeMessage"></p>
+
+
+  <div class="chat-list"
+       id="chatList">
+
+    <p class="loading">
+      Loading chats...
+    </p>
+
   </div>
 
 </div>
 
-<a href="#" class="new-chat" id="newChatBtn">
+
+<a href="NewChat.html"
+   class="new-chat"
+   id="newChatBtn">
+
   + New Chat
 </a>
+
 
 <script src="Home.js"></script>
 
 </body>
+
 </html>

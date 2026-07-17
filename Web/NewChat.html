@@ -1,38 +1,174 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 
 <head>
 
-  <title>New Chat</title>
+  <meta charset="UTF-8">
 
-  <link rel="stylesheet" href="NewChat.css">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>New Conversation</title>
+
+  <link rel="stylesheet"
+        href="NewChat.css">
 
 </head>
+
 <body>
+
 <div class="header">
-  <h2>New Conversation</h2>
-  <a href="home.html">←</a>
-</div>
-<div class="search">
-  <input placeholder="Search user ID">
-</div>
-<a href="Chat.html" class="chat"></a>
-  <div class="profile">
-  </div>
+
+  <a href="Home.html"
+     class="back">
+
+    ←
+
+  </a>
+
   <div>
-    <h3>Ali</h3>
-    <p>@ali123</p>
+
+    <h2>New Conversation</h2>
+
+    <p>
+      Create a group or manage contacts
+    </p>
+
   </div>
+
 </div>
-<a href="Chat.html" class="chat"></a>
-  <div class="profile">
+
+
+<div class="page">
+
+  <button id="groupBtn"
+          class="group-btn">
+
+    + Create New Group
+
+  </button>
+
+
+  <div class="group-box"
+       id="groupBox">
+
+    <h3>Create Group</h3>
+
+    <p class="description">
+
+      Enter a unique group ID and group name.
+
+    </p>
+
+    <label for="groupId">
+
+      Group ID
+
+    </label>
+
+    <input
+            id="groupId"
+            type="text"
+            placeholder="Example: g10"
+    >
+
+    <label for="groupName">
+
+      Group Name
+
+    </label>
+
+    <input
+            id="groupName"
+            type="text"
+            placeholder="Enter group name"
+    >
+
+    <button id="createBtn"
+            type="button">
+
+      Create Group
+
+    </button>
+
+    <p id="groupMessage"></p>
+
   </div>
-  <div>
-    <h3>Group</h3>
-    <p>Create new group</p>
+
+
+  <div class="contact-box">
+
+    <h3>Add New Contact</h3>
+
+    <p class="description">
+
+      Enter the User ID of the person
+      you want to add.
+
+    </p>
+
+    <div class="contact-form">
+
+      <input
+              id="contactId"
+              type="text"
+              placeholder="Enter User ID"
+      >
+
+      <button id="addContactBtn"
+              type="button">
+
+        Add Contact
+
+      </button>
+
+    </div>
+
+    <p id="contactMessage"></p>
+
   </div>
+
+
+  <div class="search">
+
+    <input
+            id="search"
+            type="text"
+            placeholder="Search contacts"
+    >
+
+  </div>
+
+
+  <div class="contacts-title">
+
+    <h3>Contacts</h3>
+
+    <button id="refreshContactsBtn"
+            type="button">
+
+      Refresh
+
+    </button>
+
+  </div>
+
+
+  <div id="contactList">
+
+    <p class="loading">
+
+      Loading contacts...
+
+    </p>
+
+  </div>
+
 </div>
+
+
+<script src="NewChat.js"></script>
+
 </body>
+
 </html>

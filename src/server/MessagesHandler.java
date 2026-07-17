@@ -90,7 +90,8 @@ public class MessagesHandler implements HttpHandler {
         List<Message> messages =
                 messageService.getMessagesByChatId(chatId);
 
-        StringBuilder json = new StringBuilder("[");
+        StringBuilder json =
+                new StringBuilder("[");
 
         for (int i = 0; i < messages.size(); i++) {
 
@@ -111,21 +112,23 @@ public class MessagesHandler implements HttpHandler {
                     .append("\",");
 
             json.append("\"content\":\"")
-                    .append(escapeJson(message.getVisibleContent()))
+                    .append(escapeJson(
+                            message.getVisibleContent()
+                    ))
                     .append("\",");
 
             json.append("\"createdAt\":\"")
                     .append(escapeJson(
                             message.getCreatedAt().toString()
                     ))
-                    .append("\"");
+                    .append("\",");
+
             json.append("\"edited\":")
                     .append(message.isEdited())
                     .append(",");
 
             json.append("\"deleted\":")
-                    .append(message.isDeleted())
-                    .append(",");
+                    .append(message.isDeleted());
 
             json.append("}");
 
@@ -158,7 +161,10 @@ public class MessagesHandler implements HttpHandler {
         String senderId = form.get("senderId");
         String content = form.get("content");
 
-        if (isBlank(chatId) || isBlank(senderId) || isBlank(content)){
+        if (isBlank(chatId)
+                || isBlank(senderId)
+                || isBlank(content)) {
+
             HttpUtils.sendJson(
                     exchange,
                     400,
@@ -172,20 +178,32 @@ public class MessagesHandler implements HttpHandler {
 
             return;
         }
-        User sender = userService.getUserById(senderId);
+
+        User sender =
+                userService.getUserById(senderId);
+
         if (sender == null) {
+
             HttpUtils.sendJson(
                     exchange,
                     404,
                     """
- {"success": false "message": "Sender user was not found" }""");
+                    {
+                      "success": false,
+                      "message": "Sender user was not found"
+                    }
+                    """
+            );
+
             return;
         }
-        Message message = messageService.sendMessage(
-                chatId,
-                senderId,
-                content
-        );
+
+        Message message =
+                messageService.sendMessage(
+                        chatId,
+                        senderId,
+                        content
+                );
 
         if (message == null) {
 
@@ -195,7 +213,7 @@ public class MessagesHandler implements HttpHandler {
                     """
                     {
                       "success": false,
-                      "message": "Message is invalid or longer than 500 characters"
+                      "message": "Message is invalid, too long or spam"
                     }
                     """
             );
@@ -221,7 +239,9 @@ public class MessagesHandler implements HttpHandler {
     }
 
     private boolean isBlank(String value) {
-        return value == null || value.isBlank();
+
+        return value == null
+                || value.isBlank();
     }
 
     private String escapeJson(String value) {

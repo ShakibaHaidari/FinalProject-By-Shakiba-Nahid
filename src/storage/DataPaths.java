@@ -15,6 +15,7 @@ public final class DataPaths {
     public static final Path chatSettingFile = DATA_DIR.resolve("chat_settings.txt");
     public static final Path fileMedia = DATA_DIR.resolve("shabakeh");
     public static final Path blockUser= DATA_DIR.resolve("blocked_users.txt");
+    public static final Path REACTIONS_FILE = DATA_DIR.resolve("reactions.txt");
     private DataPaths() {
     }
     public static void initialize() {
@@ -28,6 +29,7 @@ public final class DataPaths {
             createFileIfMissing(saveMessageFile);
             createFileIfMissing(chatSettingFile);
             createFileIfMissing(blockUser);
+            createFileIfMissing(REACTIONS_FILE);
 
             System.out.println("database file created susccessful.");
         } catch (IOException e) {

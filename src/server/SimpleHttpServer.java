@@ -7,6 +7,7 @@ import service.MessageService;
 import service.SavedMessageService;
 import service.ChatSettingService;
 import service.BlockedUserService;
+import service.MessageReactionService;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +22,7 @@ public class SimpleHttpServer{
     private final SavedMessageService savedMessageService;
     private final ChatSettingService chatSettingService;
     private final BlockedUserService blockedUserService;
+    private final MessageReactionService messageReactionService;
 
     private HttpServer server;
     private ExecutorService executor;
@@ -28,7 +30,8 @@ public class SimpleHttpServer{
     public SimpleHttpServer(
             UserService userService,
             GroupService groupService,
-            MessageService messageService,SavedMessageService savedMessageService, ChatSettingService chatSettingService,BlockedUserService blockedUserService){
+            MessageService messageService,SavedMessageService savedMessageService, ChatSettingService chatSettingService,BlockedUserService blockedUserService,MessageReactionService messageReactionService
+    ){
 
         this.userService = userService;
         this.groupService = groupService;
@@ -36,6 +39,7 @@ public class SimpleHttpServer{
         this.savedMessageService = savedMessageService;
         this.chatSettingService = chatSettingService;
         this.blockedUserService = blockedUserService;
+        this.messageReactionService = messageReactionService;
 
     }
 
@@ -163,6 +167,20 @@ public class SimpleHttpServer{
                 "/api/users/blocked",
                 new BlockedUsersHandler(blockedUserService)
         );
+        server.createContext(
+                "/api/messages/react",
+                new ReactMessageHandler(messageReactionService)
+        );
+
+        server.createContext(
+                "/api/messages/reaction/remove",
+                new RemoveReactionHandler(messageReactionService)
+        );
+
+        server.createContext(
+                "/api/messages/reactions",
+                new MessageReactionsHandler(messageReactionService)
+        );
 
         server.start();
 
@@ -201,6 +219,9 @@ public class SimpleHttpServer{
         System.out.println("Block User API: POST /api/users/block");
         System.out.println("Unblock User API: POST /api/users/unblock");
         System.out.println("Blocked Users API: GET /api/users/blocked");
+        System.out.println("React Message API: POST /api/messages/react");
+        System.out.println("Remove Reaction API: POST /api/messages/reaction/remove");
+        System.out.println("Message Reactions API: GET /api/messages/reactions");
     }
 
     public void stop() {

@@ -11,45 +11,28 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-public class ChatSettingRepository {
-
-    public synchronized List<ChatSetting> loadAll() {
-
+public class ChatSettingRepository{
+    public synchronized List<ChatSetting> loadAll(){
         List<ChatSetting> settings = new ArrayList<>();
-
-        try {
-            List<String> lines = Files.readAllLines(
-                    DataPaths.chatSettingFile,
-                    StandardCharsets.UTF_8
-            );
-
+        try{
+            List<String> lines = Files.readAllLines(DataPaths.chatSettingFile, StandardCharsets.UTF_8);
             for (String line : lines) {
-
-                if (line == null || line.isBlank()) {
+                if (line == null || line.isBlank()){
                     continue;
                 }
-
-                try {
-                    ChatSetting setting =
-                            lineChatSetting(line);
-
+                try{
+                    ChatSetting setting = lineChatSetting(line);
                     settings.add(setting);
 
-                } catch (Exception e) {
+                }catch (Exception e){
                     System.err.println(
-                            "Invalid chat setting record: "
-                                    + e.getMessage()
-                    );
+                            "Invalid chat setting record: " + e.getMessage());
                 }
             }
-
             return settings;
-
-        } catch (IOException e) {
+        }catch (IOException e){
             throw new IllegalStateException(
-                    "Could not load chat settings from chat_settings.txt",
-                    e
-            );
+                    "Could not load chat settings from chat_settings.txt", e);
         }
     }
 

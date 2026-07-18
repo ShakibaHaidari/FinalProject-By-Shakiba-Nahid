@@ -1,5 +1,4 @@
 package websocket;
-
 import model.Message;
 import service.MessageService;
 import util.FormParser;
@@ -17,9 +16,7 @@ import java.util.Map;
 
 public class WebsocketClientHandler implements Runnable {
 
-    private static final String WEB_SOCKET_GUID =
-            "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-
+    private static final String WEB_SOCKET_GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
     private final Socket socket;
     private final InputStream inputStream;
     private final OutputStream outputStream;

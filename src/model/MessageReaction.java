@@ -10,11 +10,13 @@ public class MessageReaction {
     private String reaction;
     private LocalDateTime reactedAt;
 
+
     public MessageReaction(
             String userId,
             String messageId,
             String reaction
     ) {
+
         this(
                 userId,
                 messageId,
@@ -23,41 +25,67 @@ public class MessageReaction {
         );
     }
 
+
     public MessageReaction(
             String userId,
             String messageId,
             String reaction,
             LocalDateTime reactedAt
     ) {
-        this.userId = userId;
-        this.messageId = messageId;
-        this.reaction = reaction;
-        this.reactedAt = reactedAt;
+
+        this.userId =
+                userId;
+
+        this.messageId =
+                messageId;
+
+        this.reaction =
+                reaction;
+
+        this.reactedAt =
+                reactedAt;
     }
 
+
     public String getUserId() {
+
         return userId;
     }
 
+
     public String getMessageId() {
+
         return messageId;
     }
 
+
     public String getReaction() {
+
         return reaction;
     }
 
+
     public LocalDateTime getReactedAt() {
+
         return reactedAt;
     }
 
-    public void setReaction(String reaction) {
-        this.reaction = reaction;
-        this.reactedAt = LocalDateTime.now();
+
+    public void setReaction(
+            String reaction
+    ) {
+
+        this.reaction =
+                reaction;
+
+        this.reactedAt =
+                LocalDateTime.now();
     }
+
 
     @Override
     public String toString() {
+
         return "MessageReaction{userId='"
                 + userId
                 + "', messageId='"

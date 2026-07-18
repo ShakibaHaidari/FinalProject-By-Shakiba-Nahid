@@ -13,22 +13,40 @@ public class RemoveReactionHandler implements HttpHandler {
 
     private final MessageReactionService messageReactionService;
 
+
     public RemoveReactionHandler(
             MessageReactionService messageReactionService
     ) {
-        this.messageReactionService = messageReactionService;
+
+        this.messageReactionService =
+                messageReactionService;
     }
 
+
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public void handle(
+            HttpExchange exchange
+    ) throws IOException {
 
-        HttpUtils.addCorsHeaders(exchange);
+        HttpUtils.addCorsHeaders(
+                exchange
+        );
 
-        if (HttpUtils.handleOptions(exchange)) {
+
+        if (HttpUtils.handleOptions(
+                exchange
+        )) {
+
             return;
         }
 
-        if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+
+        if (!exchange
+                .getRequestMethod()
+                .equalsIgnoreCase(
+                        "POST"
+                )) {
+
             HttpUtils.sendJson(
                     exchange,
                     405,
@@ -39,20 +57,40 @@ public class RemoveReactionHandler implements HttpHandler {
                     }
                     """
             );
+
             return;
         }
 
-        String body = new String(
-                exchange.getRequestBody().readAllBytes(),
-                StandardCharsets.UTF_8
-        );
 
-        Map<String, String> form = FormParser.parse(body);
+        String body =
+                new String(
+                        exchange
+                                .getRequestBody()
+                                .readAllBytes(),
+                        StandardCharsets.UTF_8
+                );
 
-        String userId = form.get("userId");
-        String messageId = form.get("messageId");
 
-        if (isBlank(userId) || isBlank(messageId)) {
+        Map<String, String> form =
+                FormParser.parse(
+                        body
+                );
+
+
+        String userId =
+                form.get(
+                        "userId"
+                );
+
+        String messageId =
+                form.get(
+                        "messageId"
+                );
+
+
+        if (isBlank(userId)
+                || isBlank(messageId)) {
+
             HttpUtils.sendJson(
                     exchange,
                     400,
@@ -63,8 +101,10 @@ public class RemoveReactionHandler implements HttpHandler {
                     }
                     """
             );
+
             return;
         }
+
 
         boolean removed =
                 messageReactionService.removeReaction(
@@ -72,19 +112,23 @@ public class RemoveReactionHandler implements HttpHandler {
                         messageId
                 );
 
+
         if (!removed) {
+
             HttpUtils.sendJson(
                     exchange,
                     400,
                     """
                     {
                       "success": false,
-                      "message": "Reaction could not be removed"
+                      "message": "Reaction was not found"
                     }
                     """
             );
+
             return;
         }
+
 
         HttpUtils.sendJson(
                 exchange,
@@ -98,7 +142,12 @@ public class RemoveReactionHandler implements HttpHandler {
         );
     }
 
-    private boolean isBlank(String value) {
-        return value == null || value.isBlank();
+
+    private boolean isBlank(
+            String value
+    ) {
+
+        return value == null
+                || value.isBlank();
     }
 }

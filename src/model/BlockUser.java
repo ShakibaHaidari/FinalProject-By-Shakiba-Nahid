@@ -8,7 +8,12 @@ public class BlockUser {
     private final String blockedUserId;
     private final LocalDateTime blockedAt;
 
-    public BlockUser(String userId, String blockedUserId){
+
+    public BlockUser(
+            String userId,
+            String blockedUserId
+    ) {
+
         this(
                 userId,
                 blockedUserId,
@@ -16,31 +21,46 @@ public class BlockUser {
         );
     }
 
+
     public BlockUser(
             String userId,
             String blockedUserId,
             LocalDateTime blockedAt
     ) {
-        this.userId = userId;
-        this.blockedUserId = blockedUserId;
-        this.blockedAt = blockedAt;
+
+        this.userId =
+                userId;
+
+        this.blockedUserId =
+                blockedUserId;
+
+        this.blockedAt =
+                blockedAt;
     }
 
+
     public String getUserId() {
+
         return userId;
     }
 
+
     public String getBlockedUserId() {
+
         return blockedUserId;
     }
 
+
     public LocalDateTime getBlockedAt() {
+
         return blockedAt;
     }
 
+
     @Override
     public String toString() {
-        return "BlockedUser{userId='"
+
+        return "BlockUser{userId='"
                 + userId
                 + "', blockedUserId='"
                 + blockedUserId

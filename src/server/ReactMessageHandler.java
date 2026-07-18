@@ -1,4 +1,3 @@
-
 package server;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -14,22 +13,40 @@ public class ReactMessageHandler implements HttpHandler {
 
     private final MessageReactionService messageReactionService;
 
+
     public ReactMessageHandler(
             MessageReactionService messageReactionService
     ) {
-        this.messageReactionService = messageReactionService;
+
+        this.messageReactionService =
+                messageReactionService;
     }
 
+
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public void handle(
+            HttpExchange exchange
+    ) throws IOException {
 
-        HttpUtils.addCorsHeaders(exchange);
+        HttpUtils.addCorsHeaders(
+                exchange
+        );
 
-        if (HttpUtils.handleOptions(exchange)) {
+
+        if (HttpUtils.handleOptions(
+                exchange
+        )) {
+
             return;
         }
 
-        if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+
+        if (!exchange
+                .getRequestMethod()
+                .equalsIgnoreCase(
+                        "POST"
+                )) {
+
             HttpUtils.sendJson(
                     exchange,
                     405,
@@ -40,21 +57,46 @@ public class ReactMessageHandler implements HttpHandler {
                     }
                     """
             );
+
             return;
         }
 
-        String body = new String(
-                exchange.getRequestBody().readAllBytes(),
-                StandardCharsets.UTF_8
-        );
 
-        Map<String, String> form = FormParser.parse(body);
+        String body =
+                new String(
+                        exchange
+                                .getRequestBody()
+                                .readAllBytes(),
+                        StandardCharsets.UTF_8
+                );
 
-        String userId = form.get("userId");
-        String messageId = form.get("messageId");
-        String reaction = form.get("reaction");
 
-        if (isBlank(userId) || isBlank(messageId) || isBlank(reaction)) {
+        Map<String, String> form =
+                FormParser.parse(
+                        body
+                );
+
+
+        String userId =
+                form.get(
+                        "userId"
+                );
+
+        String messageId =
+                form.get(
+                        "messageId"
+                );
+
+        String reaction =
+                form.get(
+                        "reaction"
+                );
+
+
+        if (isBlank(userId)
+                || isBlank(messageId)
+                || isBlank(reaction)) {
+
             HttpUtils.sendJson(
                     exchange,
                     400,
@@ -65,17 +107,21 @@ public class ReactMessageHandler implements HttpHandler {
                     }
                     """
             );
+
             return;
         }
 
-        boolean reacted =
+
+        boolean success =
                 messageReactionService.reactToMessage(
                         userId,
                         messageId,
                         reaction
                 );
 
-        if (!reacted) {
+
+        if (!success) {
+
             HttpUtils.sendJson(
                     exchange,
                     400,
@@ -86,8 +132,10 @@ public class ReactMessageHandler implements HttpHandler {
                     }
                     """
             );
+
             return;
         }
+
 
         HttpUtils.sendJson(
                 exchange,
@@ -101,7 +149,12 @@ public class ReactMessageHandler implements HttpHandler {
         );
     }
 
-    private boolean isBlank(String value) {
-        return value == null || value.isBlank();
+
+    private boolean isBlank(
+            String value
+    ) {
+
+        return value == null
+                || value.isBlank();
     }
 }

@@ -19,6 +19,7 @@ public class BlockedUserRepository {
                 new ArrayList<>();
 
         try {
+
             List<String> lines =
                     Files.readAllLines(
                             DataPaths.blockUser,
@@ -27,88 +28,128 @@ public class BlockedUserRepository {
 
             for (String line : lines) {
 
-                if (line == null || line.isBlank()) {
+                if (line == null
+                        || line.isBlank()) {
+
                     continue;
                 }
 
                 try {
+
                     BlockUser blockedUser =
-                            lineBlockedUser(line);
+                            lineToBlockedUser(
+                                    line
+                            );
 
-                    blockedUsers.add(blockedUser);
+                    blockedUsers.add(
+                            blockedUser
+                    );
 
-                } catch (Exception e) {
+                } catch (Exception exception) {
+
                     System.err.println(
                             "Invalid blocked user record: "
-                                    + e.getMessage()
+                                    + exception.getMessage()
                     );
                 }
             }
 
             return blockedUsers;
 
-        } catch (IOException e) {
+        } catch (IOException exception) {
+
             throw new IllegalStateException(
                     "Could not load blocked users from blocked_users.txt",
-                    e
+                    exception
             );
         }
     }
 
+
     public synchronized void saveAll(
             List<BlockUser> blockedUsers
     ) {
+
         List<String> lines =
                 new ArrayList<>();
 
-        for (BlockUser blockUser : blockedUsers) {
-            lines.add(blockedUserLine(blockUser));
+        for (BlockUser blockedUser
+                : blockedUsers) {
+
+            lines.add(
+                    blockedUserToLine(
+                            blockedUser
+                    )
+            );
         }
 
         try {
+
             Files.write(
                     DataPaths.blockUser,
                     lines,
                     StandardCharsets.UTF_8
             );
 
-        } catch (IOException e) {
+        } catch (IOException exception) {
+
             throw new IllegalStateException(
                     "Could not save blocked users in blocked_users.txt",
-                    e
+                    exception
             );
         }
     }
 
-    private String blockedUserLine(
+
+    private String blockedUserToLine(
             BlockUser blockedUser
     ) {
-        return encode(blockedUser.getUserId())
+
+        return encode(
+                blockedUser.getUserId()
+        )
                 + "|"
-                + encode(blockedUser.getBlockedUserId())
+                + encode(
+                blockedUser.getBlockedUserId()
+        )
                 + "|"
-                + blockedUser.getBlockedAt().toString();
+                + blockedUser
+                .getBlockedAt()
+                .toString();
     }
 
-    private BlockUser lineBlockedUser(String line) {
 
-        String[] field =
-                line.split("\\|", -1);
+    private BlockUser lineToBlockedUser(
+            String line
+    ) {
 
-        if (field.length != 3) {
+        String[] fields =
+                line.split(
+                        "\\|",
+                        -1
+                );
+
+        if (fields.length != 3) {
+
             throw new IllegalArgumentException(
-                    "blocked user record must contain 3 fields"
+                    "Blocked user record must contain 3 fields"
             );
         }
 
         String userId =
-                decode(field[0]);
+                decode(
+                        fields[0]
+                );
 
         String blockedUserId =
-                decode(field[1]);
+                decode(
+                        fields[1]
+                );
 
         LocalDateTime blockedAt =
-                LocalDateTime.parse(field[2]);
+                LocalDateTime.parse(
+                        fields[2]
+                );
 
         return new BlockUser(
                 userId,
@@ -117,19 +158,32 @@ public class BlockedUserRepository {
         );
     }
 
-    private String encode(String value) {
 
-        return Base64.getUrlEncoder()
+    private String encode(
+            String value
+    ) {
+
+        return Base64
+                .getUrlEncoder()
                 .withoutPadding()
                 .encodeToString(
-                        value.getBytes(StandardCharsets.UTF_8)
+                        value.getBytes(
+                                StandardCharsets.UTF_8
+                        )
                 );
     }
 
-    private String decode(String value) {
+
+    private String decode(
+            String value
+    ) {
 
         byte[] decodedBytes =
-                Base64.getUrlDecoder().decode(value);
+                Base64
+                        .getUrlDecoder()
+                        .decode(
+                                value
+                        );
 
         return new String(
                 decodedBytes,

@@ -1,5 +1,5 @@
-
 package server;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import service.BlockedUserService;
@@ -9,19 +9,46 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-public class UnblockUserHandler implements HttpHandler{
+public class UnblockUserHandler implements HttpHandler {
+
     private final BlockedUserService blockedUserService;
-    public UnblockUserHandler(BlockedUserService blockedUserService){
-        this.blockedUserService = blockedUserService;
+
+
+    public UnblockUserHandler(
+            BlockedUserService blockedUserService
+    ) {
+
+        this.blockedUserService =
+                blockedUserService;
     }
+
+
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        HttpUtils.addCorsHeaders(exchange);
-        if(HttpUtils.handleOptions(exchange)){
+    public void handle(
+            HttpExchange exchange
+    ) throws IOException {
+
+        HttpUtils.addCorsHeaders(
+                exchange
+        );
+
+
+        if (HttpUtils.handleOptions(
+                exchange
+        )) {
+
             return;
         }
-        if(!exchange.getRequestMethod().equalsIgnoreCase("POST")){
-            HttpUtils.sendJson(exchange,
+
+
+        if (!exchange
+                .getRequestMethod()
+                .equalsIgnoreCase(
+                        "POST"
+                )) {
+
+            HttpUtils.sendJson(
+                    exchange,
                     405,
                     """
                     {
@@ -29,15 +56,41 @@ public class UnblockUserHandler implements HttpHandler{
                       "message": "Only POST method is allowed"
                     }
                     """
-                  );
-            return;
-          }
-        String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-        Map<String, String> form = FormParser.parse(body);
-        String userId = form.get("userId");
-        String blockedUserId = form.get("blockedUserId");
+            );
 
-        if(isBlank(userId) || isBlank(blockedUserId)){
+            return;
+        }
+
+
+        String body =
+                new String(
+                        exchange
+                                .getRequestBody()
+                                .readAllBytes(),
+                        StandardCharsets.UTF_8
+                );
+
+
+        Map<String, String> form =
+                FormParser.parse(
+                        body
+                );
+
+
+        String userId =
+                form.get(
+                        "userId"
+                );
+
+        String blockedUserId =
+                form.get(
+                        "blockedUserId"
+                );
+
+
+        if (isBlank(userId)
+                || isBlank(blockedUserId)) {
+
             HttpUtils.sendJson(
                     exchange,
                     400,
@@ -48,11 +101,20 @@ public class UnblockUserHandler implements HttpHandler{
                     }
                     """
             );
+
             return;
         }
 
-        boolean unblocked = blockedUserService.unblockUser(userId, blockedUserId);
-        if(!unblocked){
+
+        boolean unblocked =
+                blockedUserService.unblockUser(
+                        userId,
+                        blockedUserId
+                );
+
+
+        if (!unblocked) {
+
             HttpUtils.sendJson(
                     exchange,
                     400,
@@ -63,8 +125,10 @@ public class UnblockUserHandler implements HttpHandler{
                     }
                     """
             );
+
             return;
-         }
+        }
+
 
         HttpUtils.sendJson(
                 exchange,
@@ -78,7 +142,12 @@ public class UnblockUserHandler implements HttpHandler{
         );
     }
 
-    private boolean isBlank(String value) {
-        return value == null || value.isBlank();
+
+    private boolean isBlank(
+            String value
+    ) {
+
+        return value == null
+                || value.isBlank();
     }
 }

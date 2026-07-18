@@ -1,5 +1,5 @@
-
 package server;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import model.BlockUser;
@@ -11,19 +11,43 @@ import java.util.List;
 import java.util.Map;
 
 public class BlockedUsersHandler implements HttpHandler {
+
     private final BlockedUserService blockedUserService;
-    public BlockedUsersHandler(BlockedUserService blockedUserService) {
-        this.blockedUserService = blockedUserService;
+
+
+    public BlockedUsersHandler(
+            BlockedUserService blockedUserService
+    ) {
+
+        this.blockedUserService =
+                blockedUserService;
     }
 
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
 
-        HttpUtils.addCorsHeaders(exchange);
-        if (HttpUtils.handleOptions(exchange)) {
+    @Override
+    public void handle(
+            HttpExchange exchange
+    ) throws IOException {
+
+        HttpUtils.addCorsHeaders(
+                exchange
+        );
+
+
+        if (HttpUtils.handleOptions(
+                exchange
+        )) {
+
             return;
         }
-        if (!exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+
+
+        if (!exchange
+                .getRequestMethod()
+                .equalsIgnoreCase(
+                        "GET"
+                )) {
+
             HttpUtils.sendJson(
                     exchange,
                     405,
@@ -33,18 +57,32 @@ public class BlockedUsersHandler implements HttpHandler {
                       "message": "Only GET method is allowed"
                     }
                     """
-                     );
-            return;
-          }
+            );
 
-        String query = exchange.getRequestURI().getRawQuery();
-        if(query == null){
-            query = "";
+            return;
         }
 
-        Map<String, String> parameters = FormParser.parse(query);
-        String userId = parameters.get("userId");
+
+        String query =
+                exchange
+                        .getRequestURI()
+                        .getRawQuery();
+
+
+        Map<String, String> parameters =
+                FormParser.parse(
+                        query
+                );
+
+
+        String userId =
+                parameters.get(
+                        "userId"
+                );
+
+
         if (isBlank(userId)) {
+
             HttpUtils.sendJson(
                     exchange,
                     400,
@@ -55,58 +93,147 @@ public class BlockedUsersHandler implements HttpHandler {
                     }
                     """
             );
-                return;
+
+            return;
         }
 
+
         List<BlockUser> blockedUsers =
-                blockedUserService.getBlockedUsers(userId);
+                blockedUserService.getBlockedUsers(
+                        userId
+                );
 
-        StringBuilder json = new StringBuilder("[");
 
-        for (int i = 0; i < blockedUsers.size(); i++) {
+        StringBuilder json =
+                new StringBuilder(
+                        "["
+                );
 
-            BlockUser blockedUser = blockedUsers.get(i);
 
-            json.append("{");
+        for (int i = 0;
+             i < blockedUsers.size();
+             i++) {
 
-            json.append("\"userId\":\"")
-                    .append(escapeJson(blockedUser.getUserId()))
-                    .append("\",");
+            BlockUser blockedUser =
+                    blockedUsers.get(
+                            i
+                    );
 
-            json.append("\"blockedUserId\":\"")
-                    .append(escapeJson(blockedUser.getBlockedUserId()))
-                    .append("\",");
 
-            json.append("\"blockedAt\":\"")
-                    .append(escapeJson(blockedUser.getBlockedAt().toString()))
-                    .append("\"");
+            json.append(
+                    "{"
+            );
 
-            json.append("}");
+
+            json.append(
+                    "\"userId\":\""
+            );
+
+            json.append(
+                    escapeJson(
+                            blockedUser.getUserId()
+                    )
+            );
+
+            json.append(
+                    "\","
+            );
+
+
+            json.append(
+                    "\"blockedUserId\":\""
+            );
+
+            json.append(
+                    escapeJson(
+                            blockedUser.getBlockedUserId()
+                    )
+            );
+
+            json.append(
+                    "\","
+            );
+
+
+            json.append(
+                    "\"blockedAt\":\""
+            );
+
+            json.append(
+                    escapeJson(
+                            blockedUser
+                                    .getBlockedAt()
+                                    .toString()
+                    )
+            );
+
+            json.append(
+                    "\""
+            );
+
+
+            json.append(
+                    "}"
+            );
+
 
             if (i < blockedUsers.size() - 1) {
-                json.append(",");
+
+                json.append(
+                        ","
+                );
             }
         }
 
-        json.append("]");
 
-        HttpUtils.sendJson(exchange, 200, json.toString());
+        json.append(
+                "]"
+        );
+
+
+        HttpUtils.sendJson(
+                exchange,
+                200,
+                json.toString()
+        );
     }
 
-    private boolean isBlank(String value) {
-        return value == null || value.isBlank();
+
+    private boolean isBlank(
+            String value
+    ) {
+
+        return value == null
+                || value.isBlank();
     }
 
-    private String escapeJson(String value) {
+
+    private String escapeJson(
+            String value
+    ) {
 
         if (value == null) {
+
             return "";
         }
 
+
         return value
-                .replace("\\", "\\\\")
-                .replace("\"", "\\\"")
-                .replace("\n", "\\n")
-                .replace("\r", "\\r");
+                .replace(
+                        "\\",
+                        "\\\\"
+                )
+                .replace(
+                        "\"",
+                        "\\\""
+                )
+                .replace(
+                        "\n",
+                        "\\n"
+                )
+                .replace(
+                        "\r",
+                        "\\r"
+                );
     }
 }

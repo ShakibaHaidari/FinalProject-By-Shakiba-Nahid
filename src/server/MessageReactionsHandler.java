@@ -1,4 +1,3 @@
-
 package server;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -15,22 +14,40 @@ public class MessageReactionsHandler implements HttpHandler {
 
     private final MessageReactionService messageReactionService;
 
+
     public MessageReactionsHandler(
             MessageReactionService messageReactionService
     ) {
-        this.messageReactionService = messageReactionService;
+
+        this.messageReactionService =
+                messageReactionService;
     }
 
+
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public void handle(
+            HttpExchange exchange
+    ) throws IOException {
 
-        HttpUtils.addCorsHeaders(exchange);
+        HttpUtils.addCorsHeaders(
+                exchange
+        );
 
-        if (HttpUtils.handleOptions(exchange)) {
+
+        if (HttpUtils.handleOptions(
+                exchange
+        )) {
+
             return;
         }
 
-        if (!exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+
+        if (!exchange
+                .getRequestMethod()
+                .equalsIgnoreCase(
+                        "GET"
+                )) {
+
             HttpUtils.sendJson(
                     exchange,
                     405,
@@ -41,21 +58,31 @@ public class MessageReactionsHandler implements HttpHandler {
                     }
                     """
             );
+
             return;
         }
 
-        String query = exchange.getRequestURI().getRawQuery();
 
-        if (query == null) {
-            query = "";
-        }
+        String query =
+                exchange
+                        .getRequestURI()
+                        .getRawQuery();
+
 
         Map<String, String> parameters =
-                FormParser.parse(query);
+                FormParser.parse(
+                        query
+                );
 
-        String messageId = parameters.get("messageId");
+
+        String messageId =
+                parameters.get(
+                        "messageId"
+                );
+
 
         if (isBlank(messageId)) {
+
             HttpUtils.sendJson(
                     exchange,
                     400,
@@ -66,63 +93,163 @@ public class MessageReactionsHandler implements HttpHandler {
                     }
                     """
             );
+
             return;
         }
 
+
         List<MessageReaction> reactions =
                 messageReactionService
-                        .getReactionsByMessageId(messageId);
+                        .getReactionsByMessageId(
+                                messageId
+                        );
 
-        StringBuilder json = new StringBuilder("[");
 
-        for (int i = 0; i < reactions.size(); i++) {
+        StringBuilder json =
+                new StringBuilder(
+                        "["
+                );
 
-            MessageReaction reaction = reactions.get(i);
 
-            json.append("{");
+        for (int i = 0;
+             i < reactions.size();
+             i++) {
 
-            json.append("\"userId\":\"")
-                    .append(escapeJson(reaction.getUserId()))
-                    .append("\",");
+            MessageReaction reaction =
+                    reactions.get(
+                            i
+                    );
 
-            json.append("\"messageId\":\"")
-                    .append(escapeJson(reaction.getMessageId()))
-                    .append("\",");
 
-            json.append("\"reaction\":\"")
-                    .append(escapeJson(reaction.getReaction()))
-                    .append("\",");
+            json.append(
+                    "{"
+            );
 
-            json.append("\"reactedAt\":\"")
-                    .append(escapeJson(reaction.getReactedAt().toString()))
-                    .append("\"");
 
-            json.append("}");
+            json.append(
+                    "\"userId\":\""
+            );
+
+            json.append(
+                    escapeJson(
+                            reaction.getUserId()
+                    )
+            );
+
+            json.append(
+                    "\","
+            );
+
+
+            json.append(
+                    "\"messageId\":\""
+            );
+
+            json.append(
+                    escapeJson(
+                            reaction.getMessageId()
+                    )
+            );
+
+            json.append(
+                    "\","
+            );
+
+
+            json.append(
+                    "\"reaction\":\""
+            );
+
+            json.append(
+                    escapeJson(
+                            reaction.getReaction()
+                    )
+            );
+
+            json.append(
+                    "\","
+            );
+
+
+            json.append(
+                    "\"reactedAt\":\""
+            );
+
+            json.append(
+                    escapeJson(
+                            reaction
+                                    .getReactedAt()
+                                    .toString()
+                    )
+            );
+
+            json.append(
+                    "\""
+            );
+
+
+            json.append(
+                    "}"
+            );
+
 
             if (i < reactions.size() - 1) {
-                json.append(",");
+
+                json.append(
+                        ","
+                );
             }
         }
 
-        json.append("]");
 
-        HttpUtils.sendJson(exchange, 200, json.toString());
+        json.append(
+                "]"
+        );
+
+
+        HttpUtils.sendJson(
+                exchange,
+                200,
+                json.toString()
+        );
     }
 
-    private boolean isBlank(String value) {
-        return value == null || value.isBlank();
+
+    private boolean isBlank(
+            String value
+    ) {
+
+        return value == null
+                || value.isBlank();
     }
 
-    private String escapeJson(String value) {
+
+    private String escapeJson(
+            String value
+    ) {
 
         if (value == null) {
+
             return "";
         }
 
+
         return value
-                .replace("\\", "\\\\")
-                .replace("\"", "\\\"")
-                .replace("\n", "\\n")
-                .replace("\r", "\\r");
+                .replace(
+                        "\\",
+                        "\\\\"
+                )
+                .replace(
+                        "\"",
+                        "\\\""
+                )
+                .replace(
+                        "\n",
+                        "\\n"
+                )
+                .replace(
+                        "\r",
+                        "\\r"
+                );
     }
 }

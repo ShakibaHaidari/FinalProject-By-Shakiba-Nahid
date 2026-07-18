@@ -1,4 +1,3 @@
-
 package repository;
 
 import model.MessageReaction;
@@ -20,6 +19,7 @@ public class MessageReactionRepository {
                 new ArrayList<>();
 
         try {
+
             List<String> lines =
                     Files.readAllLines(
                             DataPaths.REACTIONS_FILE,
@@ -28,93 +28,137 @@ public class MessageReactionRepository {
 
             for (String line : lines) {
 
-                if (line == null || line.isBlank()) {
+                if (line == null
+                        || line.isBlank()) {
+
                     continue;
                 }
 
                 try {
+
                     MessageReaction reaction =
-                            lineMessageReaction(line);
+                            lineToMessageReaction(
+                                    line
+                            );
 
-                    reactions.add(reaction);
+                    reactions.add(
+                            reaction
+                    );
 
-                } catch (Exception e) {
+                } catch (Exception exception) {
+
                     System.err.println(
                             "Invalid reaction record: "
-                                    + e.getMessage()
+                                    + exception.getMessage()
                     );
                 }
             }
 
             return reactions;
 
-        } catch (IOException e) {
+        } catch (IOException exception) {
+
             throw new IllegalStateException(
                     "Could not load reactions from reactions.txt",
-                    e
+                    exception
             );
         }
     }
 
+
     public synchronized void saveAll(
             List<MessageReaction> reactions
     ) {
+
         List<String> lines =
                 new ArrayList<>();
 
-        for (MessageReaction reaction : reactions) {
-            lines.add(messageReactionLine(reaction));
+        for (MessageReaction reaction
+                : reactions) {
+
+            lines.add(
+                    messageReactionToLine(
+                            reaction
+                    )
+            );
         }
 
         try {
+
             Files.write(
                     DataPaths.REACTIONS_FILE,
                     lines,
                     StandardCharsets.UTF_8
             );
 
-        } catch (IOException e) {
+        } catch (IOException exception) {
+
             throw new IllegalStateException(
                     "Could not save reactions in reactions.txt",
-                    e
+                    exception
             );
         }
     }
 
-    private String messageReactionLine(
+
+    private String messageReactionToLine(
             MessageReaction reaction
     ) {
-        return encode(reaction.getUserId())
+
+        return encode(
+                reaction.getUserId()
+        )
                 + "|"
-                + encode(reaction.getMessageId())
+                + encode(
+                reaction.getMessageId()
+        )
                 + "|"
-                + encode(reaction.getReaction())
+                + encode(
+                reaction.getReaction()
+        )
                 + "|"
-                + reaction.getReactedAt().toString();
+                + reaction
+                .getReactedAt()
+                .toString();
     }
 
-    private MessageReaction lineMessageReaction(String line) {
 
-        String[] field =
-                line.split("\\|", -1);
+    private MessageReaction lineToMessageReaction(
+            String line
+    ) {
 
-        if (field.length != 4) {
+        String[] fields =
+                line.split(
+                        "\\|",
+                        -1
+                );
+
+        if (fields.length != 4) {
+
             throw new IllegalArgumentException(
-                    "reaction record must contain 4 fields"
+                    "Reaction record must contain 4 fields"
             );
         }
 
         String userId =
-                decode(field[0]);
+                decode(
+                        fields[0]
+                );
 
         String messageId =
-                decode(field[1]);
+                decode(
+                        fields[1]
+                );
 
         String reaction =
-                decode(field[2]);
+                decode(
+                        fields[2]
+                );
 
         LocalDateTime reactedAt =
-                LocalDateTime.parse(field[3]);
+                LocalDateTime.parse(
+                        fields[3]
+                );
 
         return new MessageReaction(
                 userId,
@@ -124,19 +168,32 @@ public class MessageReactionRepository {
         );
     }
 
-    private String encode(String value) {
 
-        return Base64.getUrlEncoder()
+    private String encode(
+            String value
+    ) {
+
+        return Base64
+                .getUrlEncoder()
                 .withoutPadding()
                 .encodeToString(
-                        value.getBytes(StandardCharsets.UTF_8)
+                        value.getBytes(
+                                StandardCharsets.UTF_8
+                        )
                 );
     }
 
-    private String decode(String value) {
+
+    private String decode(
+            String value
+    ) {
 
         byte[] decodedBytes =
-                Base64.getUrlDecoder().decode(value);
+                Base64
+                        .getUrlDecoder()
+                        .decode(
+                                value
+                        );
 
         return new String(
                 decodedBytes,
